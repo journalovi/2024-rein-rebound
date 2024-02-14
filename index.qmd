@@ -1,197 +1,248 @@
 ---
-title: "JoVI article template for the experimental track"
+title: "Real time, cross platform visualizations with zero dependencies for the N-body package REBOUND"
 author: 
-  - name: Matthew Kay
-    orcid: 0000-0001-9446-0419
-    email: mjskay@northwestern.edu
+  - name: Hanno Rein
+    orcid: 0000-0003-1927-731X
+    email: hanno.rein@utoronto.ca
     affiliations:
-      - name: Northwestern University
-        city: Evanston
-        state: IL
-        country: USA
-bibliography: bibliography.bib
+      - name: Department of Physical and Environmental Sciences, University of Toronto
+        city: Toronto
+        state: Ontario
+        country: Canada
+      - name: Department of Astronomy and Astrophysics, University of Toronto
+        city: Toronto
+        state: Ontario
+        country: Canada
+bibliography: full.bib
 ---
-
-This template is intended for the [experimental track](https://www.journalovi.org/submit.html#experimental) at JoVI.
-
-This template describes how to set up the [Quarto](https://quarto.org/)
-environment for writing a JoVI article, provides instructions and templates for
-content that should be included in every JoVI article (such as the structured
-abstract and authorship metadata), and gives brief examples of some useful
-functionality for writing papers (such as how to include figures and citations).
-
-If you have not setup [Quarto](https://quarto.org/) or the JoVI template yet,
-skip to the [Setup](#setup) section below.
 
 ::: {.callout-note appearance="simple" icon=false collapse=false}
 ## Abstract {.unnumbered}
 
-We highly recommend all JoVI articles use a structured abstract. Structured abstracts provide a succinct overview of an article using a common set of sections. Which sections are used depends on the type of research and its goals. For example, articles with empirical methods should have a data collection section, while articles that do not analyze data to support a conclusion do not need such a section.
+###### Background
+Visualizations have become an indispensable part of the scientific process.
+A vibrant ecosystem of visualization tools exists, catering to a wide variety of different needs.
+Real-time visualizations of numerical simulations offer scientists immediate feedback about the status of their simulations and can also be valuable educational and public outreach tools.
 
-Your paper may fall into multiple types of work. We provide some example sections you may want to include in your structured abstract below, depending on the type of work. You can use the example sections to fill in the subsections that apply to your paper, then delete these first two paragraphs and the subsections that do not apply to your paper. Please add, merge, rename, or re-order sections if you feel that would improve clarity. We have some (partial) examples of structured abstracts [here](https://www.journalovi.org/structured-abstract-examples.html).
+###### Current Challenges 
+Developing a visualization tool with support for different operating systems, CPU/GPU architectures, and programming languages can be a challenge.
+It is common to use one or more graphics or UI libraries to act as abstraction layers and hide the underlying complexity.
+Whereas external libraries greatly simplify the initial programming effort, we argue that relying on them introduces new dependencies and problems, such as a higher entry barriers for new developers and users, and uncertainty regarding long-term support.
 
-###### Introduction
-The research question and a succinct motivation for answering it. 
-
-###### Theory/model
-
-*For theories or models*:
-A description of the theory or model, its key organizing principle, or
-new insights that might be gained from it
-
-###### Data Collection or Source
-
-*For empirical research, reanalysis, or meta-analysis*:
-An overview of experiment and/or data collection procedures. Mention if the collection was prespecified (via preregistration) or exploratory. For reanalyses or meta-analyses, citations of the original sources are sufficient. This section does not apply to articles that only use datasets for demonstrations. 
-
-###### Data Analysis
-
-*For empirical research, reanalysis, or meta-analysis*:
-An overview of analysis approaches used as evidence for conclusions. This section does not apply to articles that only use datasets for demonstrations. 
-
-###### Analysis Results
-
-*For empirical research, reanalysis, or meta-analysis*:
-A summary of the analysis findings
-
-###### Implementation
-
-*For systems or techniques*:
-How was the application or system implemented? 
-
-###### Demonstration
-
-*For systems or techniques*:
-A description of any demonstrations or functionality that exemplify the utility
-of the system
-
-###### Conclusion
-An interpretation of results, lessons learned, etc. in the context of the research question and its implications. _Avoid overgeneralizing_, and _avoid broad behavioral claims without strong evidence._ 
-
-###### Materials
-Link to repositories containing raw data, open source code or (pre-)registration number/links.
+###### Proposed Solution
+In this paper we present a new approach for real time visualizations which we have implemented for the N-body package REBOUND [@ReinLiu2012].
+We propose to use a web browser to handle GPU accelerated rendering.
+This enables us to offer 3D, interactive visualizations on all major operating systems.
+What makes our new approach unique is that we achieve this without the need for any external libraries.
+We utilize WebAssembly and emscripten to reuse existing OpenGL visualization code.
+Using communication via HTTP and a custom built-in web server, we are able to provide both local and remote real time visualizations.
+In addition to the browser based real time visualization, our approach offers other additional operating modes, including simulations running entirely within the browser, visualizations within jupyter notebooks, and traditional standalone visualizations using OpenGL.
+We focus on the implementation in REBOUND but the concepts and ideas discussed can be applied to many other areas in need of scientific and non-scientific real time visualizations.
 
 :::
 
-
 ::: {.callout-note appearance="simple" icon=false collapse=true}
-## Materials, Authorship, License, Conflicts
-
-Fill in the following sections in this infobox per the [JoVI Author Guide](https://www.journalovi.org/author-guide.html#sections), then delete this line.
+## Materials, License, Conflicts
 
 ###### Research materials
 
-See [the corresponding section in the author guide](https://www.journalovi.org/author-guide.html#research-material-statements).
-
-###### Authorship
-
-See [the corresponding section in the author guide](https://www.journalovi.org/author-guide.html#authorship).
+An example implementation of the solution described in this paper is included in the [REBOUND](https://github.com/hannorein/rebound) N-body package.
 
 ###### License
 
-See [the corresponding section in the author guide](https://www.journalovi.org/author-guide.html#license).
+This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ###### Conflicts of interest
+The authors declare that there are no competing interests.
 
-See [the corresponding section in the author guide](https://www.journalovi.org/author-guide.html#conflicts-of-interest).
+:::
+
+## Introduction 
+
+Visualizations are a crucial part of the scientific process.
+There are many popular tools to make two or three dimensional graphs such as gnuplot [@Williams2013], matplotlib [@Hunter2007], or yt [@Turk2011] for rendering volumetric and particle data.
+Many specialized tools exist as well, for example [@Williams2022] describe a novel approach for an interactive user interface for the WorldWide Telescope.
+The above examples demonstrate the diversity of visualization needs and the tools that have been developed to serve those needs.
+However, it would be impossible to review all the software that is available.
+
+Developing software that involves any sort of graphical interface can be a challenge.
+This is especially the case if the goal is to provide a tool that works on different operating systems and supports a variety of graphics hardware. 
+There are two ways to approach the problem of cross-platform graphics that are commonly employed:
+
+- One can write tailor graphic routines for each platform. This requires significant resources, both for development and maintenance.
+  Whereas this approach might be an option for large projects (think of a game developed by a large studio), it is typically not within the realm of possibilities for small scientific software packages.
+  If resources are finite, one might end up with limited support of only a few platforms, or with some platforms enjoying more features than others. 
+  Mobile applications are an example where this approach is often used and iOS and Android versions of the same application do not necessarily share the same features.
+- Alternatively, one can rely on a cross-platform graphics or user interface (UI) library such as [QT](https://www.qt.io), [Unity](https://unity.com), [OpenGL](https://opengl.org), or [Vulkan](https://vulkan.org).
+  These make cross-platform development much more straightforward but at the cost of adding a dependency. 
+  Scientific software, in particular if it involves simulating scientific processes, is mostly distributed as source code because researchers want the ability to study and modify it.
+  Compiling source code that depends on external libraries into an executable can be a major obstacle for new developers and users alike. 
+  Furthermore, switching from one library to another is not trivial. 
+  This can become a problem when external libraries don't get updated or become deprecated. 
+  As an example, many games and visualization tools depend on OpenGL which is now considered deprecated on MacOS.
+  Furthermore, for commercial graphic libraries such as Unity, license agreements [might change at any time](https://www.theguardian.com/games/2023/sep/12/unity-engine-fees-backlash-response).
+  In short, the development is now highly dependent on whichever external library was chosen for the project.
+
+This paper presents an alternative approach which we think has several important advantages over the two approaches above, especially for small scientific projects:
+
+- Dependency free. There are no external libraries required.
+- Cross platform. Any platform that has a reasonably modern browser can be used to render visualizations. This includes both desktop and mobile operating systems: Linux, MacOS, Windows, iOS, Android.
+- Remote visualizations. Using port-forwarding via SSH, one can run a simulations on one computer, say a node of a computing cluster, and visualize it in real time on another workstation. 
+- Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, it is likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.
+
+In the following sections, we will describe how this approach works in detail.
+
+## Operating modes
+A key feature of our approach is its flexibility.
+@fig-flowchart show the three different operating modes that are possible.
+Modules with the same colour in the figure make use of the same source code.
+The high level of code-reuse is possible because C/C++ code can be compiled with emscripten to WebAssembly which can then be interpreted by a web browser at almost native speed.
+In summary, the different modes work as follows:
+
+1. In the **standalone mode**, the visualization is making use of OpenGL. 
+   This traditional approach has been used by both visualization tools and games for decades. 
+   It requires no browser, but in addition to a C compiler, OpenGL and GLFW libraries need to be installed. 
+   This mode provides the best performance.
+2. In the **hybrid mode**, when a REBOUND simulation is started, a web server is automatically started on a separate thread.
+   The web server serves both visualization code and simulation data to a web browser.
+   The visualization is then done in the browser. 
+   The server and browser do not need to run on the same machine.
+   This mode does not require any external libraries to be installed for compilation. 
+   It provides a low entry barrier for developers and users (*it just works*).
+   This mode constitutes the novel visualization concept that we describe in this paper.
+3. In the **browser mode**, not only the visualization is handled by the browser but also the simulation itself. 
+   This mode requires no external libraries nor any server.
+   The emscripten compiler is used to bundle everything that is needed by the browser (HTML, CSS, JavaScript, WebAssembly, image data) into one single HTML file that can then be served as a static website or directly be opened locally with a web browser.
+
+
+
+
+::: {#fig-flowchart}
+![](flowchart.svg){fig.alt="Alt text" width="100%"}
+
+An overview of the three different operating modes. 
+In the standalone mode (left), the visualization is provided by OpenGL.
+In the hybrid mode (middle), the browser streams data from a web server which is then visualized using WebGL.
+In the browser mode (right), the simulation and the visualization are handled solely within the browser.
+Modules with the same colour (green, red, blue) make use of the same source code.
+:::
+
+
+Both the standalone and the browser mode have been employed widely by other tools. 
+The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds.
+In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler.
+Because there are no dependencies on external libraries, this does not required any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps.
+The user can setup or run a simulation without even considering whether a visualization might be useful.
+If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation's dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.
+
+Because we already have the visualization code running in a web browser, the additional task of running entire simulations in the web browser is straightforward.
+@fig-livesim shows an example of what is possible by using the browser mode. 
+After clicking on the figure, an N-body simulation of a self-gravitating disk can be seen.
+The simulation is running in real time in the browser.
+The rendering is using WebGL. The console output is also shown.
+The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, press the space bar to pause. 
+The figure is included in this document using an ```<iframe>``` HTML tag.
+A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size.
+For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size.
+The [REBOUND documentation](https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/) makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser.
+This is a fantastic way to show case potential users the ability of a software package.
+Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL. 
+
+::: {#fig-livesim}
+
+<iframe width="100%" height="500" src="rebound_webgl.html"></iframe>
+
+This figure shows an interactive, real time visualization of a self-gravitating disk being integrated with the N-body code REBOUND. 
+To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser. 
+This is what we refer to as the *browser mode*.
 
 :::
 
 
-## Setting up and writing a JoVI article {#setup}
+## Web Browser
+We rely on a web browser for all graphic related functionality in the hybrid and browser modes. 
+There are different ways to render visualizations within a browser. 
+For example, one can use HTML, CSS and JavaScript. 
+A popular JavaScript visualization library is [D3.js](https://d3js.org).
 
-Articles on the JoVI experimental track are written in Quarto, which is a simple markdown-based text format. This template outlines some of the features that are most useful for writing academic articles in Quarto; for more visit <https://quarto.org>.
+In recent years, browsers have also gained features that allow them to efficiently render high quality graphics and making use of GPU acceleration. 
+Although the performance is not (yet) on par with native desktop implementations, it comes very close and is sufficient for most applications.
+We make use of these features and write GPU accelerated visualizations in the browser using [WebGL](https://www.khronos.org/webgl/), a JavaScript API that provides similar functionality to OpenGL.
+All major browsers [support](https://www.khronos.org/blog/webgl-2-achieves-pervasive-support-from-all-major-web-browsers) WebGL version 2.
 
-You can find the source for this article in the [journalovi/jovi-template-quarto](https://github.com/journalovi/jovi-template-quarto) repository on Github. To create a new JoVI article, we recommend following these steps:
+We also make use [WebAssembly](https://webassembly.org), a binary instruction format that can be executed by a browser's virtual machine at almost native speeds.
+Using the [emscripten](https://emscripten.org) compiler toolchain, one can compile existing C or C++ code to WebAssembly. 
+Emscripten also converts OpenGL to WebGL so that we don't need to explicitly write WebGL code. 
+With minor adjustments, many games and visualization tools that use OpenGL on a desktop can thus also be used in a browser.
+Similar to JavaScript libraries, programs in WebAssembly format are simply static files and don't require the user to install anything, avoiding any of the issues that come with external libraries.
 
-1.  Install Quarto by following [these instructions](https://quarto.org/docs/getting-started/installation.html).
+There are several advantages of focusing on WebAssembly and emscripten for the in-browser rendering code.
+First, we can reuse our existing C code that uses OpenGL for rendering with minimal changes.
+This makes it easy for existing projects to migrate to browser-based rendering. 
+Other programming languages such as python are also beginning to be supported in browsers [@pyodide].
 
-2.  Create a new git repository to hold your article by [forking our template repository](https://github.com/journalovi/jovi-template-quarto).
+Second, not only can we reuse graphic related code, but also any other C code. 
+In the case of REBOUND, the code running in the browser uses the same input and output routines as the N-body simulation itself. 
+By reusing these routines, it becomes very easy to unpack visualization data from a file or data stream, thus allowing us to send back and forth data over the network - which is what we need for the hybrid mode.
+Specifically, we are using REBOUND's Simulationarchive binary format [@ReinTamayo2017] to send data to the browser.
 
-You can then edit `index.qmd` in your new repository to write your paper. There are several options for editing and rendering the paper:
+Third, we can even run an entire simulation in a web browser (we call this browser mode), generating data that is being visualized on-the-fly. 
+This allows visualizations to be included in static website such as @fig-livesim in this paper. 
 
-1.  You can execute `quarto serve` from the commandline to render the paper to `index.html` and preview it in the browser.
-
-2.  You can edit the paper in RStudio and render it by clicking on the *Render* button: 
-
-    ![](images/rstudio-render-button.png){style="width: 382.5px" fig.alt="Click Render in the Rstudio toolbar to render a Quarto document."}
-
-**If you plan to use RStudio,** read more about RStudio and Quarto [here](https://quarto.org/docs/computations/using-rstudio.html). In particular, you should install RStudio \> version 1.5. If you do, you can also enable the visual editor:
-
-![](images/rstudio-visual-editor.png){style="width: 554.5px" fig.alt="Click the Settings button and then Use Visual Editor in the Rstudio toolbar to enable the visual editor."}
-
-## Citations and footnotes
-
-Citations can be inserted using `[@simkin2002read]`, which is rendered as: [@simkin2002read]. You can also format the citation just as the year with `[-@simkin2002read]`, though then we recommending including author names in the sentence; e.g. `Simkin and Roychowdhury [-@simkin2002read] said blah blah blah`: Simkin and Roychowdhury [-@simkin2002read] said blah blah blah. Citations for this paper are kept in `bibliography.bib` in BibTeX format. 
-
-You can also insert footnotes.[^1] Note that some traditional uses of footnotes (e.g. to include URLs) are unnecessary in JoVI, as you can (and should) instead simply link directly to the URL you want to refer to with an [inline link](https://www.markdownguide.org/basic-syntax/#links).
-
-[^1]: Like this one!
-
-For more on footnotes and citations see [this Quarto documentation page](https://quarto.org/docs/authoring/footnotes-and-citations.html).
+Fourth, we are not restricting ourselves to the browser ecosystem. We can also run visualizations locally, without the need for emscripten, WebGL, or a browser, by simply calling OpenGL APIs the old fashioned way. 
+This makes development easier and allows advanced users who are comfortable installing libraries to take full advantages of the efficiencies and all the features that a native application provides.
 
 
-## Figures and images
+ 
 
-Images can be included and for accessibility purposes **should always** have alt text. Alt text of visualizations should provide meaningful descriptions of the visualization.
 
-``` markdown
-![](images/teaser.svg){fig.alt="Mean expected payoff / optimal
-payoff for 10 conditions, showing an increase over time in most
-conditions, with dot50 having the highest value of
-approximately 97% of optimal."}
-```
+## Web Server
+As we delegate rendering functionality to the browser, we somehow need to get the data that we wish to visualize into the browser.
+For small and static datasets one can simply use static files which the browser can access, or even include the data within a single HTML file (see @fig-livesim).
 
-![](images/teaser.svg){fig.alt="Mean expected payoff / optimal payoff for 10 conditions, showing an increase over time in most conditions, with dot50 having the highest value of approximately 97% of optimal."}
+For large datasets and for tools such as REBOUND which visualize simulations in real time, it makes sense to only send the data to the browser when it is needed or when it is available. 
+Given that the rendering takes place in a browser, we use HTTP requests and a web server for this data transfer. 
 
-You can also add captions and figure references using a `:::` block combined with an id prefixed with `#fig-`:
+There are many libraries and packages that implement a web server. 
+Examples are the Apache HTTP Server Project, or python's default ```http.server``` module. 
+However, one of our initial goals was to avoid any external libraries. 
+So instead of using an http library, we simply implement our own. 
+This may seem like a daunting task, but the reference implementation we provide in REBOUND is only about 500 lines of C code and works natively on all major operating systems including Linux, MacOS, and Windows.
+This is possible because our web server doesn't need to support security features - it is not intended for use on public networks. 
+It just performs the task of getting data to our rendering code in the browser. 
+Since we are implementing both the front and back end, we have tight control over what kind of requests the server needs to be able to respond to.
 
-``` markdown
-::: {#fig-teaser}
-![](images/teaser.svg){fig.alt="Mean expected payoff / optimal
-payoff for 10 conditions, showing an increase over time in most
-conditions, with dot50 having the highest value of
-approximately 97% of optimal."}
+In addition to sending data from the simulation to the browser, the web server can also receive commands and data from the browser.
+For example, in REBOUND these commands allow the user to pause or quit a running simulation, or step through simulations manually.
+We furthermore make use of HTTP POST request to send screen captures from the browser to the server.
+The user may opt to save these screenshots on the server side, for example to later combine individual frames into an animation. 
+To further facility the rendering of complex animations, we also implement a way for the server side to push the view matrix and other visualization setting to the browser and override any client side user interaction. 
+The beginning of the simulation in @fig-livesim demonstrates this: the camera automatically zooms in and rotates by 90 degrees at the beginning of the simulation before yielding control over the visualization to the user.
 
-Mean expected payoff / optimal payoff for 10 conditions.
-:::
-```
 
-::: {#fig-teaser}
-![](images/teaser.svg){fig.alt="Mean expected payoff / optimal payoff for 10 conditions, showing an increase over time in most conditions, with dot50 having the highest value of approximately 97% of optimal."}
 
-Mean expected payoff / optimal payoff for 10 conditions.
-:::
+## Jupyter Notebooks
+Although REBOUND is written in C, it also comes with python interface, allowing users to more easily setup and run N-body simulations that do not require modifying the REBOUND source code itself.
+Jupyter notebooks [@jupyter] are a popular web-based interactive environment to edit and run python code.
+Given that we now have a web-based visualization tool for REBOUND, we can easily incorporate it into a Jupyter notebook.
+A user can start an interactive visualization of a simulation within a Jupyter notebook by simply calling the `.widget()` function on any simulation object. 
+All this function does is insert an iframe in the notebook and point it to the simulation's web server. 
+Just as before, this workflow does not rely on any external libraries, neither on the C nor the python side. 
+Everything is completely self-contained. 
 
-Then you can refer to the above figure in text using `@fig-teaser`; for example:
 
-Refer to @fig-teaser. For more on cross-references, see the [Quarto page on cross-references](https://quarto.org/docs/authoring/cross-references.html).
 
-For the highest-quality output, we recommend using SVG figures if possible.
 
-Quarto also contains classes for more complex figure layouts and subfigures, which we recommend using in most cases if you need more complex layouts; see [the Quarto page on figures](https://quarto.org/docs/authoring/figures-and-layout.html). That said, we encourage exploration of what is possible with online article formats, and you should feel free to experiment so long as the result is archivable, accessible, and readable.
+## Conclusions
+In this paper, we have presented a flexible framework to add real time visualization to a scientific simulation package.
+Our approach provides GPU accelerated visualizations on all major operating systems with zero dependencies on external libraries.
+We achieve this by relying on a web browser for rendering, and implementing a web server from scratch.
+Our approach is compatible with modern web-based environments such as Jupyter notebooks.
+It also allows interactive visualizations to be embedded in static websites such as scientific publications, documentation, and blogs.
 
-## Body text
-
-The basic body text, header formatting, and basic tags such as links, emphasis, etc should be left as-is except in rare cases (for which you should be able to demonstrate the value of your modifications). That said, we do encourage experimentation with what is possible in this format; some possibilities that just scrath the surface include: using color or other formatting to link text content semantically with figures; using inline figures; experimenting with interactive widgets in text and figures. So long as content retains archivability, accessibility, and readability, we welcome experimentation with the format.
-
-## Code
-
-Quarto supports R and python code; for example:
-
-```{r}
-1 + 2
-```
-
-## Equations
-
-Equations can be included using LaTeX syntax:
-
-$$
-x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
-$$
-
-For more on equations, see [the corresponding section in the Quarto documentation]().
+A reference implementation of our approach is provided within the [REBOUND](https://github.com/hannorein/rebound) N-body integrator. 
+We were able to reuse the majority of the rendering code from the existing OpenGL based visualization in REBOUND by converting it to WebGL and WebAssembly with emscripten. 
+We believe our approach is general enough that it will be applicable to a wide variety of other software packages which currently lack the possibility of real time visualizations.
 
 ## References {.unnumbered}
 
