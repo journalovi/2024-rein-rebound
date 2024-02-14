@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hanno Rein">
+
+<title>Real time, cross platform visualizations with zero dependencies for the N-body package REBOUND</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Real time, cross platform visualizations with zero dependencies for the N-body package REBOUND</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliations</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Hanno Rein <a href="https://orcid.org/0000-0003-1927-731X" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Department of Physical and Environmental Sciences, University of Toronto
+          </p>
+        <p class="affiliation">
+            Department of Astronomy and Astrophysics, University of Toronto
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Abstract
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<section id="background" class="level6">
+<h6 class="anchored" data-anchor-id="background">Background</h6>
+<p>Visualizations have become an indispensable part of the scientific process. A vibrant ecosystem of visualization tools exists, catering to a wide variety of different needs. Real-time visualizations of numerical simulations offer scientists immediate feedback about the status of their simulations and can also be valuable educational and public outreach tools.</p>
+</section>
+<section id="current-challenges" class="level6">
+<h6 class="anchored" data-anchor-id="current-challenges">Current Challenges</h6>
+<p>Developing a visualization tool with support for different operating systems, CPU/GPU architectures, and programming languages can be a challenge. It is common to use one or more graphics or UI libraries to act as abstraction layers and hide the underlying complexity. Whereas external libraries greatly simplify the initial programming effort, we argue that relying on them introduces new dependencies and problems, such as a higher entry barriers for new developers and users, and uncertainty regarding long-term support.</p>
+</section>
+<section id="proposed-solution" class="level6">
+<h6 class="anchored" data-anchor-id="proposed-solution">Proposed Solution</h6>
+<p>In this paper we present a new approach for real time visualizations which we have implemented for the N-body package REBOUND <span class="citation" data-cites="ReinLiu2012">(<a href="#ref-ReinLiu2012" role="doc-biblioref">Rein and Liu 2012</a>)</span>. We propose to use a web browser to handle GPU accelerated rendering. This enables us to offer 3D, interactive visualizations on all major operating systems. What makes our new approach unique is that we achieve this without the need for any external libraries. We utilize WebAssembly and emscripten to reuse existing OpenGL visualization code. Using communication via HTTP and a custom built-in web server, we are able to provide both local and remote real time visualizations. In addition to the browser based real time visualization, our approach offers other additional operating modes, including simulations running entirely within the browser, visualizations within jupyter notebooks, and traditional standalone visualizations using OpenGL. We focus on the implementation in REBOUND but the concepts and ideas discussed can be applied to many other areas in need of scientific and non-scientific real time visualizations.</p>
+</section>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Materials, License, Conflicts
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="research-materials" class="level6">
+<h6 class="anchored" data-anchor-id="research-materials">Research materials</h6>
+<p>An example implementation of the solution described in this paper is included in the <a href="https://github.com/hannorein/rebound">REBOUND</a> N-body package.</p>
+</section>
+<section id="license" class="level6">
+<h6 class="anchored" data-anchor-id="license">License</h6>
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+</section>
+<section id="conflicts-of-interest" class="level6">
+<h6 class="anchored" data-anchor-id="conflicts-of-interest">Conflicts of interest</h6>
+<p>The authors declare that there are no competing interests.</p>
+</section>
+</div>
+</div>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Visualizations are a crucial part of the scientific process. There are many popular tools to make two or three dimensional graphs such as gnuplot <span class="citation" data-cites="Williams2013">(<a href="#ref-Williams2013" role="doc-biblioref">Williams and Kelley 2013</a>)</span>, matplotlib <span class="citation" data-cites="Hunter2007">(<a href="#ref-Hunter2007" role="doc-biblioref">Hunter 2007</a>)</span>, or yt <span class="citation" data-cites="Turk2011">(<a href="#ref-Turk2011" role="doc-biblioref">Turk et al. 2011</a>)</span> for rendering volumetric and particle data. Many specialized tools exist as well, for example <span class="citation" data-cites="Williams2022">(<a href="#ref-Williams2022" role="doc-biblioref">Williams et al. 2022</a>)</span> describe a novel approach for an interactive user interface for the WorldWide Telescope. The above examples demonstrate the diversity of visualization needs and the tools that have been developed to serve those needs. However, it would be impossible to review all the software that is available.</p>
+<p>Developing software that involves any sort of graphical interface can be a challenge. This is especially the case if the goal is to provide a tool that works on different operating systems and supports a variety of graphics hardware. There are two ways to approach the problem of cross-platform graphics that are commonly employed:</p>
+<ul>
+<li>One can write tailor graphic routines for each platform. This requires significant resources, both for development and maintenance. Whereas this approach might be an option for large projects (think of a game developed by a large studio), it is typically not within the realm of possibilities for small scientific software packages. If resources are finite, one might end up with limited support of only a few platforms, or with some platforms enjoying more features than others. Mobile applications are an example where this approach is often used and iOS and Android versions of the same application do not necessarily share the same features.</li>
+<li>Alternatively, one can rely on a cross-platform graphics or user interface (UI) library such as <a href="https://www.qt.io">QT</a>, <a href="https://unity.com">Unity</a>, <a href="https://opengl.org">OpenGL</a>, or <a href="https://vulkan.org">Vulkan</a>. These make cross-platform development much more straightforward but at the cost of adding a dependency. Scientific software, in particular if it involves simulating scientific processes, is mostly distributed as source code because researchers want the ability to study and modify it. Compiling source code that depends on external libraries into an executable can be a major obstacle for new developers and users alike. Furthermore, switching from one library to another is not trivial. This can become a problem when external libraries don’t get updated or become deprecated. As an example, many games and visualization tools depend on OpenGL which is now considered deprecated on MacOS. Furthermore, for commercial graphic libraries such as Unity, license agreements <a href="https://www.theguardian.com/games/2023/sep/12/unity-engine-fees-backlash-response">might change at any time</a>. In short, the development is now highly dependent on whichever external library was chosen for the project.</li>
+</ul>
+<p>This paper presents an alternative approach which we think has several important advantages over the two approaches above, especially for small scientific projects:</p>
+<ul>
+<li>Dependency free. There are no external libraries required.</li>
+<li>Cross platform. Any platform that has a reasonably modern browser can be used to render visualizations. This includes both desktop and mobile operating systems: Linux, MacOS, Windows, iOS, Android.</li>
+<li>Remote visualizations. Using port-forwarding via SSH, one can run a simulations on one computer, say a node of a computing cluster, and visualize it in real time on another workstation.</li>
+<li>Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, it is likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.</li>
+</ul>
+<p>In the following sections, we will describe how this approach works in detail.</p>
+</section>
+<section id="operating-modes" class="level2">
+<h2 class="anchored" data-anchor-id="operating-modes">Operating modes</h2>
+<p>A key feature of our approach is its flexibility. <a href="#fig-flowchart">Figure&nbsp;1</a> show the three different operating modes that are possible. Modules with the same colour in the figure make use of the same source code. The high level of code-reuse is possible because C/C++ code can be compiled with emscripten to WebAssembly which can then be interpreted by a web browser at almost native speed. In summary, the different modes work as follows:</p>
+<ol type="1">
+<li>In the <strong>standalone mode</strong>, the visualization is making use of OpenGL. This traditional approach has been used by both visualization tools and games for decades. It requires no browser, but in addition to a C compiler, OpenGL and GLFW libraries need to be installed. This mode provides the best performance.</li>
+<li>In the <strong>hybrid mode</strong>, when a REBOUND simulation is started, a web server is automatically started on a separate thread. The web server serves both visualization code and simulation data to a web browser. The visualization is then done in the browser. The server and browser do not need to run on the same machine. This mode does not require any external libraries to be installed for compilation. It provides a low entry barrier for developers and users (<em>it just works</em>). This mode constitutes the novel visualization concept that we describe in this paper.</li>
+<li>In the <strong>browser mode</strong>, not only the visualization is handled by the browser but also the simulation itself. This mode requires no external libraries nor any server. The emscripten compiler is used to bundle everything that is needed by the browser (HTML, CSS, JavaScript, WebAssembly, image data) into one single HTML file that can then be served as a static website or directly be opened locally with a web browser.</li>
+</ol>
+<div id="fig-flowchart" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="flowchart.svg" class="img-fluid figure-img" style="width:100.0%" data-fig.alt="Alt text"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: An overview of the three different operating modes. In the standalone mode (left), the visualization is provided by OpenGL. In the hybrid mode (middle), the browser streams data from a web server which is then visualized using WebGL. In the browser mode (right), the simulation and the visualization are handled solely within the browser. Modules with the same colour (green, red, blue) make use of the same source code.</figcaption>
+</figure>
+</div>
+<p>Both the standalone and the browser mode have been employed widely by other tools. The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds. In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler. Because there are no dependencies on external libraries, this does not required any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps. The user can setup or run a simulation without even considering whether a visualization might be useful. If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation’s dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.</p>
+<p>Because we already have the visualization code running in a web browser, the additional task of running entire simulations in the web browser is straightforward. <a href="#fig-livesim">Figure&nbsp;2</a> shows an example of what is possible by using the browser mode. After clicking on the figure, an N-body simulation of a self-gravitating disk can be seen. The simulation is running in real time in the browser. The rendering is using WebGL. The console output is also shown. The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, press the space bar to pause. The figure is included in this document using an <code>&lt;iframe&gt;</code> HTML tag. A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size. For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size. The <a href="https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/">REBOUND documentation</a> makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser. This is a fantastic way to show case potential users the ability of a software package. Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL.</p>
+<div id="fig-livesim" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<iframe width="100%" height="500" src="rebound_webgl.html">
+</iframe>
+<figcaption class="figure-caption">Figure&nbsp;2: This figure shows an interactive, real time visualization of a self-gravitating disk being integrated with the N-body code REBOUND. To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser. This is what we refer to as the <em>browser mode</em>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="web-browser" class="level2">
+<h2 class="anchored" data-anchor-id="web-browser">Web Browser</h2>
+<p>We rely on a web browser for all graphic related functionality in the hybrid and browser modes. There are different ways to render visualizations within a browser. For example, one can use HTML, CSS and JavaScript. A popular JavaScript visualization library is <a href="https://d3js.org">D3.js</a>.</p>
+<p>In recent years, browsers have also gained features that allow them to efficiently render high quality graphics and making use of GPU acceleration. Although the performance is not (yet) on par with native desktop implementations, it comes very close and is sufficient for most applications. We make use of these features and write GPU accelerated visualizations in the browser using <a href="https://www.khronos.org/webgl/">WebGL</a>, a JavaScript API that provides similar functionality to OpenGL. All major browsers <a href="https://www.khronos.org/blog/webgl-2-achieves-pervasive-support-from-all-major-web-browsers">support</a> WebGL version 2.</p>
+<p>We also make use <a href="https://webassembly.org">WebAssembly</a>, a binary instruction format that can be executed by a browser’s virtual machine at almost native speeds. Using the <a href="https://emscripten.org">emscripten</a> compiler toolchain, one can compile existing C or C++ code to WebAssembly. Emscripten also converts OpenGL to WebGL so that we don’t need to explicitly write WebGL code. With minor adjustments, many games and visualization tools that use OpenGL on a desktop can thus also be used in a browser. Similar to JavaScript libraries, programs in WebAssembly format are simply static files and don’t require the user to install anything, avoiding any of the issues that come with external libraries.</p>
+<p>There are several advantages of focusing on WebAssembly and emscripten for the in-browser rendering code. First, we can reuse our existing C code that uses OpenGL for rendering with minimal changes. This makes it easy for existing projects to migrate to browser-based rendering. Other programming languages such as python are also beginning to be supported in browsers <span class="citation" data-cites="pyodide">(<a href="#ref-pyodide" role="doc-biblioref">Droettboom et al. 2021</a>)</span>.</p>
+<p>Second, not only can we reuse graphic related code, but also any other C code. In the case of REBOUND, the code running in the browser uses the same input and output routines as the N-body simulation itself. By reusing these routines, it becomes very easy to unpack visualization data from a file or data stream, thus allowing us to send back and forth data over the network - which is what we need for the hybrid mode. Specifically, we are using REBOUND’s Simulationarchive binary format <span class="citation" data-cites="ReinTamayo2017">(<a href="#ref-ReinTamayo2017" role="doc-biblioref">Rein and Tamayo 2017</a>)</span> to send data to the browser.</p>
+<p>Third, we can even run an entire simulation in a web browser (we call this browser mode), generating data that is being visualized on-the-fly. This allows visualizations to be included in static website such as <a href="#fig-livesim">Figure&nbsp;2</a> in this paper.</p>
+<p>Fourth, we are not restricting ourselves to the browser ecosystem. We can also run visualizations locally, without the need for emscripten, WebGL, or a browser, by simply calling OpenGL APIs the old fashioned way. This makes development easier and allows advanced users who are comfortable installing libraries to take full advantages of the efficiencies and all the features that a native application provides.</p>
+</section>
+<section id="web-server" class="level2">
+<h2 class="anchored" data-anchor-id="web-server">Web Server</h2>
+<p>As we delegate rendering functionality to the browser, we somehow need to get the data that we wish to visualize into the browser. For small and static datasets one can simply use static files which the browser can access, or even include the data within a single HTML file (see <a href="#fig-livesim">Figure&nbsp;2</a>).</p>
+<p>For large datasets and for tools such as REBOUND which visualize simulations in real time, it makes sense to only send the data to the browser when it is needed or when it is available. Given that the rendering takes place in a browser, we use HTTP requests and a web server for this data transfer.</p>
+<p>There are many libraries and packages that implement a web server. Examples are the Apache HTTP Server Project, or python’s default <code>http.server</code> module. However, one of our initial goals was to avoid any external libraries. So instead of using an http library, we simply implement our own. This may seem like a daunting task, but the reference implementation we provide in REBOUND is only about 500 lines of C code and works natively on all major operating systems including Linux, MacOS, and Windows. This is possible because our web server doesn’t need to support security features - it is not intended for use on public networks. It just performs the task of getting data to our rendering code in the browser. Since we are implementing both the front and back end, we have tight control over what kind of requests the server needs to be able to respond to.</p>
+<p>In addition to sending data from the simulation to the browser, the web server can also receive commands and data from the browser. For example, in REBOUND these commands allow the user to pause or quit a running simulation, or step through simulations manually. We furthermore make use of HTTP POST request to send screen captures from the browser to the server. The user may opt to save these screenshots on the server side, for example to later combine individual frames into an animation. To further facility the rendering of complex animations, we also implement a way for the server side to push the view matrix and other visualization setting to the browser and override any client side user interaction. The beginning of the simulation in <a href="#fig-livesim">Figure&nbsp;2</a> demonstrates this: the camera automatically zooms in and rotates by 90 degrees at the beginning of the simulation before yielding control over the visualization to the user.</p>
+</section>
+<section id="jupyter-notebooks" class="level2">
+<h2 class="anchored" data-anchor-id="jupyter-notebooks">Jupyter Notebooks</h2>
+<p>Although REBOUND is written in C, it also comes with python interface, allowing users to more easily setup and run N-body simulations that do not require modifying the REBOUND source code itself. Jupyter notebooks <span class="citation" data-cites="jupyter">(<a href="#ref-jupyter" role="doc-biblioref">Kluyver et al. 2016</a>)</span> are a popular web-based interactive environment to edit and run python code. Given that we now have a web-based visualization tool for REBOUND, we can easily incorporate it into a Jupyter notebook. A user can start an interactive visualization of a simulation within a Jupyter notebook by simply calling the <code>.widget()</code> function on any simulation object. All this function does is insert an iframe in the notebook and point it to the simulation’s web server. Just as before, this workflow does not rely on any external libraries, neither on the C nor the python side. Everything is completely self-contained.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>In this paper, we have presented a flexible framework to add real time visualization to a scientific simulation package. Our approach provides GPU accelerated visualizations on all major operating systems with zero dependencies on external libraries. We achieve this by relying on a web browser for rendering, and implementing a web server from scratch. Our approach is compatible with modern web-based environments such as Jupyter notebooks. It also allows interactive visualizations to be embedded in static websites such as scientific publications, documentation, and blogs.</p>
+<p>A reference implementation of our approach is provided within the <a href="https://github.com/hannorein/rebound">REBOUND</a> N-body integrator. We were able to reuse the majority of the rendering code from the existing OpenGL based visualization in REBOUND by converting it to WebGL and WebAssembly with emscripten. We believe our approach is general enough that it will be applicable to a wide variety of other software packages which currently lack the possibility of real time visualizations.</p>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-pyodide" class="csl-entry" role="listitem">
+Droettboom, Michael, Roman Yurchak, Hood Chatham, Dexter Chua, Marc Abramowitz, casatir, Jason Stafford, et al. 2021. <span>“Pyodide/Pyodide:”</span> Zenodo. <a href="https://doi.org/10.5281/zenodo.5156931">https://doi.org/10.5281/zenodo.5156931</a>.
+</div>
+<div id="ref-Hunter2007" class="csl-entry" role="listitem">
+Hunter, J. D. 2007. <span>“Matplotlib: A 2D Graphics Environment.”</span> <em>Computing in Science &amp; Engineering</em> 9 (3): 90–95. <a href="https://doi.org/10.1109/MCSE.2007.55">https://doi.org/10.1109/MCSE.2007.55</a>.
+</div>
+<div id="ref-jupyter" class="csl-entry" role="listitem">
+Kluyver, Thomas, Benjamin Ragan-Kelley, Fernando Pérez, Brian Granger, Matthias Bussonnier, Jonathan Frederic, Kyle Kelley, et al. 2016. <span>“Jupyter Notebooks—a Publishing Format for Reproducible Computational Workflows.”</span> <em>Positioning and Power in Academic Publishing: Players, Agents and Agendas</em>, 87.
+</div>
+<div id="ref-ReinLiu2012" class="csl-entry" role="listitem">
+Rein, H., and S. -F. Liu. 2012. <span>“<span class="nocase">REBOUND: an open-source multi-purpose N-body code for collisional dynamics</span>”</span> 537 (January): A128. <a href="https://doi.org/10.1051/0004-6361/201118085">https://doi.org/10.1051/0004-6361/201118085</a>.
+</div>
+<div id="ref-ReinTamayo2017" class="csl-entry" role="listitem">
+Rein, H., and D. Tamayo. 2017. <span>“A New Paradigm for Reproducing and Analysing n-Body Simulations of Planetary Systems.”</span> <em>MNRAS</em> 467 (January): 2377–83.
+</div>
+<div id="ref-Turk2011" class="csl-entry" role="listitem">
+Turk, M. J., B. D. Smith, J. S. Oishi, S. Skory, S. W. Skillman, T. Abel, and M. L. Norman. 2011. <span>“<span class="nocase">yt: A Multi-code Analysis Toolkit for Astrophysical Simulation Data</span>.”</span> <em>The Astrophysical Journal Supplement Series</em> 192 (January): 9. <a href="https://doi.org/10.1088/0067-0049/192/1/9">https://doi.org/10.1088/0067-0049/192/1/9</a>.
+</div>
+<div id="ref-Williams2013" class="csl-entry" role="listitem">
+Williams, Thomas, and Colin Kelley. 2013. <span>“Gnuplot 4.6: An Interactive Plotting Program.”</span> <a href="http://gnuplot.sourceforge.net/" class="uri">http://gnuplot.sourceforge.net/</a>.
+</div>
+<div id="ref-Williams2022" class="csl-entry" role="listitem">
+Williams, Jonathan Carifio, Henrik Norman, and A. David Weigel. 2022. <span>“<span class="nocase">A Novel JupyterLab User Experience for Interactive Data Visualization</span>.”</span> <em>arXiv e-Prints</em>, December, arXiv:2212.03907. <a href="https://doi.org/10.48550/arXiv.2212.03907">https://doi.org/10.48550/arXiv.2212.03907</a>.
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
