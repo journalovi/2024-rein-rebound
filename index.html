@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -178,10 +178,10 @@ Materials, License, Conflicts
 <li>In the <strong>hybrid mode</strong>, when a REBOUND simulation is started, a web server is automatically started on a separate thread. The web server serves both visualization code and simulation data to a web browser. The visualization is then done in the browser. The server and browser do not need to run on the same machine. This mode does not require any external libraries to be installed for compilation. It provides a low entry barrier for developers and users (<em>it just works</em>). This mode constitutes the novel visualization concept that we describe in this paper.</li>
 <li>In the <strong>browser mode</strong>, not only the visualization is handled by the browser but also the simulation itself. This mode requires no external libraries nor any server. The emscripten compiler is used to bundle everything that is needed by the browser (HTML, CSS, JavaScript, WebAssembly, image data) into one single HTML file that can then be served as a static website or directly be opened locally with a web browser.</li>
 </ol>
-<div id="fig-flowchart" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig.alt="Alt text">
+<div id="fig-flowchart" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig.alt="The figure shows three flow charts describing the three operating modes.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="flowchart.svg" class="img-fluid figure-img" style="width:100.0%" data-fig.alt="Alt text">
+<img src="flowchart.svg" class="img-fluid figure-img" style="width:100.0%" data-fig.alt="The figure shows three flow charts describing the three operating modes.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: An overview of the three different operating modes. In the standalone mode (left), the visualization is provided by OpenGL. In the hybrid mode (middle), the browser streams data from a web server which is then visualized using WebGL. In the browser mode (right), the simulation and the visualization are handled solely within the browser. Modules with the same colour (green, red, blue) make use of the same source code.
