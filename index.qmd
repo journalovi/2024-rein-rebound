@@ -118,7 +118,7 @@ In summary, the different modes work as follows:
 
 
 ::: {#fig-flowchart}
-![](flowchart.svg){fig.alt="Alt text" width="100%"}
+![](flowchart.svg){fig.alt="The figure shows three flow charts describing the three operating modes." width="100%"}
 
 An overview of the three different operating modes. 
 In the standalone mode (left), the visualization is provided by OpenGL.
