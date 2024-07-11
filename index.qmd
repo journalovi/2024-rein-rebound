@@ -18,9 +18,10 @@ bibliography: full.bib
 
 ::: {.callout-important appearance="simple"}
 ## Under Review {.unnumbered}
-This paper is [under review](https://www.journalovi.org/under-review.html) on the experimental track of
-the [Journal of Visualization and Interaction](https://www.journalovi.org/). See the
-[reviewing process](https://github.com/journalovi/2024-rein-reboundE/issues).
+This paper is [under review](https://www.journalovi.org/under-review.html) on the experimental
+track of the [Journal of Visualization and Interaction](https://www.journalovi.org/).
+See the [reviews](https://github.com/journalovi/2024-rein-rebound/issues?q=label%3Areview) and
+[issues](https://github.com/journalovi/2024-rein-rebound/issues) for this paper.
 :::
 
 ::: {.callout-note appearance="simple" icon=false collapse=false}
