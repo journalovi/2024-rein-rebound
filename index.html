@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.54">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,10 +58,24 @@ div.csl-indent {
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#operating-modes" id="toc-operating-modes" class="nav-link" data-scroll-target="#operating-modes"><span class="header-section-number">2</span> Operating modes</a></li>
+  <li><a href="#web-browser" id="toc-web-browser" class="nav-link" data-scroll-target="#web-browser"><span class="header-section-number">3</span> Web Browser</a></li>
+  <li><a href="#web-server" id="toc-web-server" class="nav-link" data-scroll-target="#web-server"><span class="header-section-number">4</span> Web Server</a></li>
+  <li><a href="#jupyter-notebooks" id="toc-jupyter-notebooks" class="nav-link" data-scroll-target="#jupyter-notebooks"><span class="header-section-number">5</span> Jupyter Notebooks</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">6</span> Conclusions</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -166,8 +180,8 @@ Materials, License, Conflicts
 </div>
 </div>
 </div>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <p>Visualizations are a crucial part of the scientific process. There are many popular tools to make two or three dimensional graphs such as gnuplot <span class="citation" data-cites="Williams2013">(<a href="#ref-Williams2013" role="doc-biblioref">Williams and Kelley 2013</a>)</span>, matplotlib <span class="citation" data-cites="Hunter2007">(<a href="#ref-Hunter2007" role="doc-biblioref">Hunter 2007</a>)</span>, or yt <span class="citation" data-cites="Turk2011">(<a href="#ref-Turk2011" role="doc-biblioref">Turk et al. 2011</a>)</span> for rendering volumetric and particle data. Many specialized tools exist as well, for example <span class="citation" data-cites="Williams2022">(<a href="#ref-Williams2022" role="doc-biblioref">Williams et al. 2022</a>)</span> describe a novel approach for an interactive user interface for the WorldWide Telescope. The above examples demonstrate the diversity of visualization needs and the tools that have been developed to serve those needs. However, it would be impossible to review all the software that is available.</p>
 <p>Developing software that involves any sort of graphical interface can be a challenge. This is especially the case if the goal is to provide a tool that works on different operating systems and supports a variety of graphics hardware. There are two ways to approach the problem of cross-platform graphics that are commonly employed:</p>
 <ul>
@@ -183,15 +197,15 @@ Materials, License, Conflicts
 </ul>
 <p>In the following sections, we will describe how this approach works in detail.</p>
 </section>
-<section id="operating-modes" class="level2">
-<h2 class="anchored" data-anchor-id="operating-modes">Operating modes</h2>
+<section id="operating-modes" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="operating-modes"><span class="header-section-number">2</span> Operating modes</h2>
 <p>A key feature of our approach is its flexibility. <a href="#fig-flowchart" class="quarto-xref">Figure&nbsp;1</a> show the three different operating modes that are possible. Modules with the same colour in the figure make use of the same source code. The high level of code-reuse is possible because C/C++ code can be compiled with emscripten to WebAssembly which can then be interpreted by a web browser at almost native speed. In summary, the different modes work as follows:</p>
 <ol type="1">
 <li>In the <strong>standalone mode</strong>, the visualization is making use of OpenGL. This traditional approach has been used by both visualization tools and games for decades. It requires no browser, but in addition to a C compiler, OpenGL and GLFW libraries need to be installed. This mode provides the best performance.</li>
 <li>In the <strong>hybrid mode</strong>, when a REBOUND simulation is started, a web server is automatically started on a separate thread. The web server serves both visualization code and simulation data to a web browser. The visualization is then done in the browser. The server and browser do not need to run on the same machine. This mode does not require any external libraries to be installed for compilation. It provides a low entry barrier for developers and users (<em>it just works</em>). This mode constitutes the novel visualization concept that we describe in this paper.</li>
 <li>In the <strong>browser mode</strong>, not only the visualization is handled by the browser but also the simulation itself. This mode requires no external libraries nor any server. The emscripten compiler is used to bundle everything that is needed by the browser (HTML, CSS, JavaScript, WebAssembly, image data) into one single HTML file that can then be served as a static website or directly be opened locally with a web browser.</li>
 </ol>
-<div id="fig-flowchart" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig.alt="The figure shows three flow charts describing the three operating modes.">
+<div id="fig-flowchart" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig.alt="The figure shows three flow charts describing the three operating modes.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="flowchart.svg" class="img-fluid figure-img" style="width:100.0%" data-fig.alt="The figure shows three flow charts describing the three operating modes.">
@@ -203,7 +217,7 @@ Figure&nbsp;1: An overview of the three different operating modes. In the standa
 </div>
 <p>Both the standalone and the browser mode have been employed widely by other tools. The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds. In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler. Because there are no dependencies on external libraries, this does not required any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps. The user can setup or run a simulation without even considering whether a visualization might be useful. If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation’s dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.</p>
 <p>Because we already have the visualization code running in a web browser, the additional task of running entire simulations in the web browser is straightforward. <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> shows an example of what is possible by using the browser mode. After clicking on the figure, an N-body simulation of a self-gravitating disk can be seen. The simulation is running in real time in the browser. The rendering is using WebGL. The console output is also shown. The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, press the space bar to pause. The figure is included in this document using an <code>&lt;iframe&gt;</code> HTML tag. A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size. For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size. The <a href="https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/">REBOUND documentation</a> makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser. This is a fantastic way to show case potential users the ability of a software package. Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL.</p>
-<div id="fig-livesim" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-livesim" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-livesim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <iframe width="100%" height="500" src="rebound_webgl.html">
@@ -215,8 +229,8 @@ Figure&nbsp;2: This figure shows an interactive, real time visualization of a se
 </figure>
 </div>
 </section>
-<section id="web-browser" class="level2">
-<h2 class="anchored" data-anchor-id="web-browser">Web Browser</h2>
+<section id="web-browser" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="web-browser"><span class="header-section-number">3</span> Web Browser</h2>
 <p>We rely on a web browser for all graphic related functionality in the hybrid and browser modes. There are different ways to render visualizations within a browser. For example, one can use HTML, CSS and JavaScript. A popular JavaScript visualization library is <a href="https://d3js.org">D3.js</a>.</p>
 <p>In recent years, browsers have also gained features that allow them to efficiently render high quality graphics and making use of GPU acceleration. Although the performance is not (yet) on par with native desktop implementations, it comes very close and is sufficient for most applications. We make use of these features and write GPU accelerated visualizations in the browser using <a href="https://www.khronos.org/webgl/">WebGL</a>, a JavaScript API that provides similar functionality to OpenGL. All major browsers <a href="https://www.khronos.org/blog/webgl-2-achieves-pervasive-support-from-all-major-web-browsers">support</a> WebGL version 2.</p>
 <p>We also make use <a href="https://webassembly.org">WebAssembly</a>, a binary instruction format that can be executed by a browser’s virtual machine at almost native speeds. Using the <a href="https://emscripten.org">emscripten</a> compiler toolchain, one can compile existing C or C++ code to WebAssembly. Emscripten also converts OpenGL to WebGL so that we don’t need to explicitly write WebGL code. With minor adjustments, many games and visualization tools that use OpenGL on a desktop can thus also be used in a browser. Similar to JavaScript libraries, programs in WebAssembly format are simply static files and don’t require the user to install anything, avoiding any of the issues that come with external libraries.</p>
@@ -225,19 +239,19 @@ Figure&nbsp;2: This figure shows an interactive, real time visualization of a se
 <p>Third, we can even run an entire simulation in a web browser (we call this browser mode), generating data that is being visualized on-the-fly. This allows visualizations to be included in static website such as <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> in this paper.</p>
 <p>Fourth, we are not restricting ourselves to the browser ecosystem. We can also run visualizations locally, without the need for emscripten, WebGL, or a browser, by simply calling OpenGL APIs the old fashioned way. This makes development easier and allows advanced users who are comfortable installing libraries to take full advantages of the efficiencies and all the features that a native application provides.</p>
 </section>
-<section id="web-server" class="level2">
-<h2 class="anchored" data-anchor-id="web-server">Web Server</h2>
+<section id="web-server" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="web-server"><span class="header-section-number">4</span> Web Server</h2>
 <p>As we delegate rendering functionality to the browser, we somehow need to get the data that we wish to visualize into the browser. For small and static datasets one can simply use static files which the browser can access, or even include the data within a single HTML file (see <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a>).</p>
 <p>For large datasets and for tools such as REBOUND which visualize simulations in real time, it makes sense to only send the data to the browser when it is needed or when it is available. Given that the rendering takes place in a browser, we use HTTP requests and a web server for this data transfer.</p>
 <p>There are many libraries and packages that implement a web server. Examples are the Apache HTTP Server Project, or python’s default <code>http.server</code> module. However, one of our initial goals was to avoid any external libraries. So instead of using an http library, we simply implement our own. This may seem like a daunting task, but the reference implementation we provide in REBOUND is only about 500 lines of C code and works natively on all major operating systems including Linux, MacOS, and Windows. This is possible because our web server doesn’t need to support security features - it is not intended for use on public networks. It just performs the task of getting data to our rendering code in the browser. Since we are implementing both the front and back end, we have tight control over what kind of requests the server needs to be able to respond to.</p>
 <p>In addition to sending data from the simulation to the browser, the web server can also receive commands and data from the browser. For example, in REBOUND these commands allow the user to pause or quit a running simulation, or step through simulations manually. We furthermore make use of HTTP POST request to send screen captures from the browser to the server. The user may opt to save these screenshots on the server side, for example to later combine individual frames into an animation. To further facility the rendering of complex animations, we also implement a way for the server side to push the view matrix and other visualization setting to the browser and override any client side user interaction. The beginning of the simulation in <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> demonstrates this: the camera automatically zooms in and rotates by 90 degrees at the beginning of the simulation before yielding control over the visualization to the user.</p>
 </section>
-<section id="jupyter-notebooks" class="level2">
-<h2 class="anchored" data-anchor-id="jupyter-notebooks">Jupyter Notebooks</h2>
+<section id="jupyter-notebooks" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="jupyter-notebooks"><span class="header-section-number">5</span> Jupyter Notebooks</h2>
 <p>Although REBOUND is written in C, it also comes with python interface, allowing users to more easily setup and run N-body simulations that do not require modifying the REBOUND source code itself. Jupyter notebooks <span class="citation" data-cites="jupyter">(<a href="#ref-jupyter" role="doc-biblioref">Kluyver et al. 2016</a>)</span> are a popular web-based interactive environment to edit and run python code. Given that we now have a web-based visualization tool for REBOUND, we can easily incorporate it into a Jupyter notebook. A user can start an interactive visualization of a simulation within a Jupyter notebook by simply calling the <code>.widget()</code> function on any simulation object. All this function does is insert an iframe in the notebook and point it to the simulation’s web server. Just as before, this workflow does not rely on any external libraries, neither on the C nor the python side. Everything is completely self-contained.</p>
 </section>
-<section id="conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<section id="conclusions" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">6</span> Conclusions</h2>
 <p>In this paper, we have presented a flexible framework to add real time visualization to a scientific simulation package. Our approach provides GPU accelerated visualizations on all major operating systems with zero dependencies on external libraries. We achieve this by relying on a web browser for rendering, and implementing a web server from scratch. Our approach is compatible with modern web-based environments such as Jupyter notebooks. It also allows interactive visualizations to be embedded in static websites such as scientific publications, documentation, and blogs.</p>
 <p>A reference implementation of our approach is provided within the <a href="https://github.com/hannorein/rebound">REBOUND</a> N-body integrator. We were able to reuse the majority of the rendering code from the existing OpenGL based visualization in REBOUND by converting it to WebGL and WebAssembly with emscripten. We believe our approach is general enough that it will be applicable to a wide variety of other software packages which currently lack the possibility of real time visualizations.</p>
 </section>
@@ -308,18 +322,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -351,7 +354,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -359,7 +384,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
