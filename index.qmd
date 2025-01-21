@@ -252,6 +252,19 @@ A reference implementation of our approach is provided within the [REBOUND](http
 We were able to reuse the majority of the rendering code from the existing OpenGL based visualization in REBOUND by converting it to WebGL and WebAssembly with emscripten. 
 We believe our approach is general enough that it will be applicable to a wide variety of other software packages which currently lack the possibility of real time visualizations.
 
+## Authorship {.unnumbered}
+
+**Hanno Rein**: Conceptualization, Implementation, Writing.
+
+## License {.unnumbered}
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+
+## Conflict of Interest {.unnumbered}
+
+The author declares that there are no other competing interests.
+
+
 ## References {.unnumbered}
 
 ::: {#refs}
