@@ -72,6 +72,9 @@ div.csl-indent {
   <li><a href="#web-server" id="toc-web-server" class="nav-link" data-scroll-target="#web-server"><span class="header-section-number">4</span> Web Server</a></li>
   <li><a href="#jupyter-notebooks" id="toc-jupyter-notebooks" class="nav-link" data-scroll-target="#jupyter-notebooks"><span class="header-section-number">5</span> Jupyter Notebooks</a></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">6</span> Conclusions</a></li>
+  <li><a href="#authorship" id="toc-authorship" class="nav-link" data-scroll-target="#authorship">Authorship</a></li>
+  <li><a href="#license-1" id="toc-license-1" class="nav-link" data-scroll-target="#license-1">License</a></li>
+  <li><a href="#conflict-of-interest" id="toc-conflict-of-interest" class="nav-link" data-scroll-target="#conflict-of-interest">Conflict of Interest</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -254,6 +257,18 @@ Figure&nbsp;2: This figure shows an interactive, real time visualization of a se
 <h2 data-number="6" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">6</span> Conclusions</h2>
 <p>In this paper, we have presented a flexible framework to add real time visualization to a scientific simulation package. Our approach provides GPU accelerated visualizations on all major operating systems with zero dependencies on external libraries. We achieve this by relying on a web browser for rendering, and implementing a web server from scratch. Our approach is compatible with modern web-based environments such as Jupyter notebooks. It also allows interactive visualizations to be embedded in static websites such as scientific publications, documentation, and blogs.</p>
 <p>A reference implementation of our approach is provided within the <a href="https://github.com/hannorein/rebound">REBOUND</a> N-body integrator. We were able to reuse the majority of the rendering code from the existing OpenGL based visualization in REBOUND by converting it to WebGL and WebAssembly with emscripten. We believe our approach is general enough that it will be applicable to a wide variety of other software packages which currently lack the possibility of real time visualizations.</p>
+</section>
+<section id="authorship" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="authorship">Authorship</h2>
+<p><strong>Hanno Rein</strong>: Conceptualization, Implementation, Writing.</p>
+</section>
+<section id="license-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="license-1">License</h2>
+<p>This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</section>
+<section id="conflict-of-interest" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="conflict-of-interest">Conflict of Interest</h2>
+<p>The author declares that there are no other competing interests.</p>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
