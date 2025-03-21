@@ -3,7 +3,7 @@
 Authors: @hannorein
 OC: @mjskay
 AE: @floe
-R1: TBD
+R1: @RaphaelWimmer
 R2: TBD
 R3: TBD
 ```
