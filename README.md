@@ -4,6 +4,6 @@ Authors: @hannorein
 OC: @mjskay
 AE: @floe
 R1: @RaphaelWimmer
-R2: TBD
+R2: @sharponlooker
 R3: TBD
 ```
