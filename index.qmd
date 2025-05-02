@@ -126,7 +126,7 @@ In summary, the different modes work as follows:
 
 
 ::: {#fig-flowchart}
-![](flowchart.svg){fig.alt="The figure shows three flow charts describing the three operating modes." width="100%"}
+![](flowchart.svg){fig.alt="This figure shows a flow charts describing the three operating modes. On the left is a green node 'REBOUND Simulation thread' which connects to a red node 'REBOUND Visualization thread' via a double headed arrow. The latter connects to a blue node 'Open GL' via a single headed arrow. In the middle is another green node 'REBOUND Simulation thread' which connects to a white node 'REBOUND Server thread' via a double headed arrow. The latter connexts to another white node 'Javascript' via a double headed arrow. The arrow has the 'HTTP' attached to it. The 'Javascript' node connects to a red 'REBOUND Visualization thread' node via a double headed arrow. The latter node connects to a blue node 'WebG' via a single headed arrow. The last three nodes in are grouped together in a box with the label 'Browser'. On the right is another green node 'REBOUND Simulation thread' which is connected to a red node 'REBOUND Visualization thread' via double headed arrows. The latter is connected to a blue node 'WebGL' via a single headed arrow. All three nodes on the right are grouped together in a box with the label 'Browser'." width="100%"}
 
 An overview of the three different operating modes. 
 In the standalone mode (left), the visualization is provided by OpenGL.
