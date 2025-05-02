@@ -14,6 +14,7 @@ author:
         state: Ontario
         country: Canada
 bibliography: full.bib
+citations-hover: false
 ---
 
 ::: {.callout-important appearance="simple"}
