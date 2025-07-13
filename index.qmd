@@ -139,7 +139,7 @@ Modules with the same colour (green, red, blue) make use of the same source code
 
 Both the standalone and the browser mode have been employed widely by other tools. 
 The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds.
-In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler.
+In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler~[REBOUND also comes in the form of a pre-compiled Python package in which case no compiler is needed.].
 Because there are no dependencies on external libraries, this does not required any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps.
 The user can setup or run a simulation without even considering whether a visualization might be useful.
 If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation's dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.
