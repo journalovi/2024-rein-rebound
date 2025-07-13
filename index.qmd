@@ -253,6 +253,14 @@ A reference implementation of our approach is provided within the [REBOUND](http
 We were able to reuse the majority of the rendering code from the existing OpenGL based visualization in REBOUND by converting it to WebGL and WebAssembly with emscripten. 
 We believe our approach is general enough that it will be applicable to a wide variety of other software packages which currently lack the possibility of real time visualizations.
 
+There are many possibilities for further improvements.
+We would like to highlight one which would make this framework even more accessible.
+Pyodide [@pyodide] is a port of CPython to WebAssembly which makes it possible to install and run Python packages in the browser.
+In constrast to the browser mode discussed above, with Pyodide a user can interpret python code interactively directly in the browser. 
+REBOUND already is available as a Pyodide package and one can thus code up and run a custom REBOUND simulation entirely from within the broswer. 
+However, the visualization framework presented in this paper still has to be ported.
+The main difficulty is that communication between the visualization thread and the simulation thread needs to be changed (we can no longer communicate over network ports) and the support of threads is somewhat restricted in WebAssembly (UI changes need to come from one thread and thus needs to be shared with the python console). 
+
 ## Authorship {.unnumbered}
 
 **Hanno Rein**: Conceptualization, Implementation, Writing.
