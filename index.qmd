@@ -94,7 +94,7 @@ There are two ways to approach the problem of cross-platform graphics that are c
 
 This paper presents an alternative approach which we think has several important advantages over the two approaches above, especially for small scientific projects:
 
-- Dependency free. There are no external libraries required.
+- Dependency free. There are no external libraries required.^[A WebAssembly compiler is required.]
 - Cross platform. Any platform that has a reasonably modern browser can be used to render visualizations. This includes both desktop and mobile operating systems: Linux, MacOS, Windows, iOS, Android.
 - Remote visualizations. Using port-forwarding via SSH, one can run a simulations on one computer, say a node of a computing cluster, and visualize it in real time on another workstation. 
 - Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, it is likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.
