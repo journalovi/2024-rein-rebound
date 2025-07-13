@@ -186,7 +186,7 @@ With minor adjustments, many games and visualization tools that use OpenGL on a 
 Similar to JavaScript libraries, programs in WebAssembly format are simply static files and don't require the user to install anything, avoiding any of the issues that come with external libraries.
 
 There are several advantages of focusing on WebAssembly and emscripten for the in-browser rendering code.
-First, we can reuse our existing C code that uses OpenGL for rendering with minimal changes.
+First, we can reuse our existing C code that uses OpenGL for rendering with minimal changes related to the rendering loop and the rendering of on-screen text.^[Rendering text is non-trivial in pure OpenGL. However, it is very easy in a browser with the additional benefit of better supporting accessibilty tools such as screen readers.]
 This makes it easy for existing projects to migrate to browser-based rendering. 
 Other programming languages such as python are also beginning to be supported in browsers [@pyodide].
 
