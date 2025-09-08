@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.7.34">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -51,11 +51,40 @@ div.csl-indent {
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-288170ab61bddda1fa81b507106dae6f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-2726112a799522b710a3fbdbec744b25.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -148,7 +177,7 @@ Abstract
 </section>
 <section id="current-challenges" class="level6">
 <h6 class="anchored" data-anchor-id="current-challenges">Current Challenges</h6>
-<p>Developing a visualization tool with support for different operating systems, CPU/GPU architectures, and programming languages can be a challenge. It is common to use one or more graphics or UI libraries to act as abstraction layers and hide the underlying complexity. Whereas external libraries greatly simplify the initial programming effort, we argue that relying on them introduces new dependencies and problems, such as a higher entry barriers for new developers and users, and uncertainty regarding long-term support.</p>
+<p>Developing a visualization tool with support for different operating systems, CPU/GPU architectures, and programming languages can be a challenge. It is common to use one or more graphics or UI libraries to act as abstraction layers and hide the underlying complexity. Whereas external libraries greatly simplify the initial programming effort, we argue that relying on them introduces new dependencies and problems, such as a higher barriers to entry for new developers and users, and uncertainty regarding long-term support.</p>
 </section>
 <section id="proposed-solution" class="level6">
 <h6 class="anchored" data-anchor-id="proposed-solution">Proposed Solution</h6>
@@ -186,24 +215,24 @@ Materials, License, Conflicts
 </div>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>Visualizations are a crucial part of the scientific process. There are many popular tools to make two or three dimensional graphs such as gnuplot <span class="citation" data-cites="Williams2013">(<a href="#ref-Williams2013" role="doc-biblioref">Williams and Kelley 2013</a>)</span>, matplotlib <span class="citation" data-cites="Hunter2007">(<a href="#ref-Hunter2007" role="doc-biblioref">Hunter 2007</a>)</span>, or yt <span class="citation" data-cites="Turk2011">(<a href="#ref-Turk2011" role="doc-biblioref">Turk et al. 2011</a>)</span> for rendering volumetric and particle data. Many specialized tools exist as well, for example <span class="citation" data-cites="Williams2022">(<a href="#ref-Williams2022" role="doc-biblioref">Williams et al. 2022</a>)</span> describe a novel approach for an interactive user interface for the WorldWide Telescope. The above examples demonstrate the diversity of visualization needs and the tools that have been developed to serve those needs. However, it would be impossible to review all the software that is available.</p>
+<p>Visualizations are a crucial part of the scientific process. There are many popular tools to make two or three dimensional graphs such as gnuplot <span class="citation" data-cites="Williams2013">(<a href="#ref-Williams2013" role="doc-biblioref">Williams and Kelley 2013</a>)</span>, matplotlib <span class="citation" data-cites="Hunter2007">(<a href="#ref-Hunter2007" role="doc-biblioref">Hunter 2007</a>)</span>, or yt <span class="citation" data-cites="Turk2011">(<a href="#ref-Turk2011" role="doc-biblioref">Turk et al. 2011</a>)</span> for rendering volumetric and particle data. Many specialized tools exist as well, for example <span class="citation" data-cites="Williams2022">Williams et al. (<a href="#ref-Williams2022" role="doc-biblioref">2022</a>)</span> describe a novel approach for an interactive user interface for the WorldWide Telescope. The above examples demonstrate the diversity of visualization needs and the tools that have been developed to serve those needs. However, it would be impossible to review all the software that is available.</p>
 <p>Developing software that involves any sort of graphical interface can be a challenge. This is especially the case if the goal is to provide a tool that works on different operating systems and supports a variety of graphics hardware. There are two ways to approach the problem of cross-platform graphics that are commonly employed:</p>
 <ul>
 <li>One can write tailored graphic routines for each platform. This requires significant resources, both for development and maintenance. Whereas this approach might be an option for large projects (think of a game developed by a large studio), it is typically not within the realm of possibilities for small scientific software packages. If resources are finite, one might end up with limited support of only a few platforms, or with some platforms enjoying more features than others. Mobile applications are an example where this approach is often used and iOS and Android versions of the same application do not necessarily share the same features.</li>
-<li>Alternatively, one can rely on a cross-platform graphics or user interface (UI) library such as <a href="https://www.qt.io">QT</a>, <a href="https://unity.com">Unity</a>, <a href="https://opengl.org">OpenGL</a>, or <a href="https://vulkan.org">Vulkan</a>. These make cross-platform development much more straightforward but at the cost of adding a dependency. Scientific software, in particular if it involves simulating scientific processes, is mostly distributed as source code because researchers want the ability to study and modify it. Compiling source code that depends on external libraries into an executable can be a major obstacle for new developers and users alike. Furthermore, switching from one library to another is not trivial. This can become a problem when external libraries don’t get updated or become deprecated. As an example, many games and visualization tools depend on OpenGL which is now considered deprecated on MacOS. Furthermore, for commercial graphic libraries such as Unity, license agreements <a href="https://www.theguardian.com/games/2023/sep/12/unity-engine-fees-backlash-response">might change at any time</a>. In short, the development is now highly dependent on whichever external library was chosen for the project.</li>
+<li>Alternatively, one can rely on a cross-platform libraries, frameworks, or APIs such as <a href="https://www.qt.io">QT</a>, <a href="https://unity.com">Unity</a>, <a href="https://opengl.org">OpenGL</a>, or <a href="https://vulkan.org">Vulkan</a>. These make cross-platform development much more straightforward but at the cost of adding a dependency. Scientific software, in particular if it involves simulating scientific processes, is mostly distributed as source code because researchers want the ability to study and modify it. Compiling source code that depends on external libraries into an executable can be a major obstacle for new developers and users alike. Furthermore, switching from one library to another is not trivial. This can become a problem when external libraries don’t get updated or become deprecated. As an example, many games and visualization tools depend on OpenGL which is now considered deprecated on MacOS. Furthermore, for commercial graphic libraries such as Unity, license agreements <a href="https://www.theguardian.com/games/2023/sep/12/unity-engine-fees-backlash-response">might change at any time</a>. In short, the development is now highly dependent on whichever external library was chosen for the project.</li>
 </ul>
 <p>This paper presents an alternative approach which we think has several important advantages over the two approaches above, especially for small scientific projects:</p>
 <ul>
 <li>Dependency free. There are no external libraries required.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li>Cross platform. Any platform that has a reasonably modern browser can be used to render visualizations. This includes both desktop and mobile operating systems: Linux, MacOS, Windows, iOS, Android.</li>
-<li>Remote visualizations. Using port-forwarding via SSH, one can run a simulations on one computer, say a node of a computing cluster, and visualize it in real time on another workstation.</li>
+<li>Remote visualizations. Using port-forwarding via SSH, one can run a simulation on one computer, say a node of a computing cluster, and visualize it in real time on another workstation.</li>
 <li>Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, it is likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.</li>
 </ul>
 <p>In the following sections, we will describe how this approach works in detail.</p>
 </section>
 <section id="operating-modes" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="operating-modes"><span class="header-section-number">2</span> Operating modes</h2>
-<p>A key feature of our approach is its flexibility. <a href="#fig-flowchart" class="quarto-xref">Figure&nbsp;1</a> show the three different operating modes that are possible. Modules with the same colour in the figure make use of the same source code. The high level of code-reuse is possible because C/C++ code can be compiled with emscripten to WebAssembly which can then be interpreted by a web browser at almost native speed. In summary, the different modes work as follows:</p>
+<p>A key feature of our approach is its flexibility. <a href="#fig-flowchart" class="quarto-xref">Figure&nbsp;1</a> shows the three different operating modes that are possible. Modules with the same colour in the figure make use of the same source code. The high level of code-reuse is possible because C/C++ code can be compiled with emscripten to WebAssembly which can then be interpreted by a web browser at almost native speed. In summary, the different modes work as follows:</p>
 <ol type="1">
 <li>In the <strong>standalone mode</strong>, the visualization is making use of OpenGL. This traditional approach has been used by both visualization tools and games for decades. It requires no browser, but in addition to a C compiler, OpenGL and GLFW libraries need to be installed. This mode provides the best performance.</li>
 <li>In the <strong>hybrid mode</strong>, when a REBOUND simulation is started, a web server is automatically started on a separate thread. The web server serves both visualization code and simulation data to a web browser. The visualization is then done in the browser. The server and browser do not need to run on the same machine. This mode does not require any external libraries to be installed for compilation. It provides a low entry barrier for developers and users (<em>it just works</em>). This mode constitutes the novel visualization concept that we describe in this paper.</li>
@@ -219,8 +248,44 @@ Figure&nbsp;1: An overview of the three different operating modes. In the standa
 </figcaption>
 </figure>
 </div>
-<p>Both the standalone and the browser mode have been employed widely by other tools. The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds. In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler~[REBOUND also comes in the form of a pre-compiled Python package in which case no compiler is needed.]. Because there are no dependencies on external libraries, this does not required any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps. The user can setup or run a simulation without even considering whether a visualization might be useful. If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation’s dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.</p>
-<p>Because we already have the visualization code running in a web browser, the additional task of running entire simulations in the web browser is straightforward. <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> shows an example of what is possible by using the browser mode. After clicking on the figure, an N-body simulation of a self-gravitating disk can be seen. The simulation is running in real time in the browser. The rendering is using WebGL. The console output is also shown. The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, press the space bar to pause. The figure is included in this document using an <code>&lt;iframe&gt;</code> HTML tag. A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size. For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size. The <a href="https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/">REBOUND documentation</a> makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser. This is a fantastic way to showcase potential users the ability of a software package. Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL.</p>
+<p>Both the standalone and the browser mode have been employed widely by other tools. The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds. In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Because there are no dependencies on external libraries, this does not require any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps. The user can setup or run a simulation without even considering whether a visualization might be useful. If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation’s dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.</p>
+<p>Because we already have the visualization code running in a web browser, the additional task of running entire simulations in the web browser is straightforward. <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> shows an example of what is possible by using the browser mode. After clicking on the figure, an N-body simulation of a self-gravitating disk can be seen. The simulation is running in real time in the browser. The rendering is using WebGL. The console output is also shown. The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, press the space bar to pause. The figure is included in this document using an <code>&lt;iframe&gt;</code> HTML tag. A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size. For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. The <a href="https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/">REBOUND documentation</a> makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser. This is a fantastic way to showcase potential users the ability of a software package. Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL.</p>
+<p>To measure the performance of the three different operating modes, we run the self-gravitating disk simulation from <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> with <span class="math inline">\(N=10^4\)</span> as well as <span class="math inline">\(N=10^5\)</span> particles and measure the average frames per second of the visualizations. The results are shown in <a href="#tbl-performance" class="quarto-xref">Table&nbsp;1</a>. For small simulations (<span class="math inline">\(N=10^5\)</span>), the performance is comparable for all three modes (42 - 71fps). The hybrid mode is the slowest, which makes sense given the additional data transfer over http. For larger particle numbers (<span class="math inline">\(N=10^5\)</span>) the native OpenGL visualization performs significantly better (41fps) than the hybrid or browser mode (2.2fps and 3.7fps). The hybrid mode is slow because at every frame 12.8MB of data need to be transferred over http. The browser mode is slow for a different reason: the simulation and the visualization run on the same thread. Thus, while the integrator is computing the next timestep, the visualization appears frozen. Without the simulation paused, the visualization performs significiantly better (29fps). WebAssembly and emscripten support multithreading and shared memory access across threads (SharedArrayBuffer). However, this feature is currently not used in the browser mode because it is gated behind a Cross Origin Opener Policy<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> which makes deployment more difficult.</p>
+<div id="tbl-performance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Performance
+</figcaption>
+<div aria-describedby="tbl-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Mode</th>
+<th style="text-align: left;"><span class="math inline">\(N=10^4\)</span> particles</th>
+<th style="text-align: left;"><span class="math inline">\(N=10^5\)</span> particles</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OpenGL</td>
+<td style="text-align: left;">71 fps</td>
+<td style="text-align: left;">41 fps</td>
+</tr>
+<tr class="even">
+<td>Hybrid</td>
+<td style="text-align: left;">42 fps</td>
+<td style="text-align: left;">2.2 fps</td>
+</tr>
+<tr class="odd">
+<td>Browser</td>
+<td style="text-align: left;">54 fps</td>
+<td style="text-align: left;">3.7 fps</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 <div id="fig-livesim" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-livesim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -228,7 +293,7 @@ Figure&nbsp;1: An overview of the three different operating modes. In the standa
 </iframe>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-livesim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: This figure shows an interactive, real time visualization of a self-gravitating disk being integrated with the N-body code REBOUND. To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser. This is what we refer to as the <em>browser mode</em>.
+Figure&nbsp;2: This figure shows an interactive, real time visualization of a self-gravitating disk where the equations of motion are being integrated with the N-body code REBOUND. To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser. This is what we refer to as the <em>browser mode</em>.
 </figcaption>
 </figure>
 </div>
@@ -238,7 +303,7 @@ Figure&nbsp;2: This figure shows an interactive, real time visualization of a se
 <p>We rely on a web browser for all graphic related functionality in the hybrid and browser modes. There are different ways to render visualizations within a browser. For example, one can use HTML, CSS and JavaScript. A popular JavaScript visualization library is <a href="https://d3js.org">D3.js</a>.</p>
 <p>In recent years, browsers have also gained features that allow them to efficiently render high quality graphics and making use of GPU acceleration. Although the performance is not (yet) on par with native desktop implementations, it comes very close and is sufficient for most applications. We make use of these features and write GPU accelerated visualizations in the browser using <a href="https://www.khronos.org/webgl/">WebGL</a>, a JavaScript API that provides similar functionality to OpenGL. All major browsers <a href="https://www.khronos.org/blog/webgl-2-achieves-pervasive-support-from-all-major-web-browsers">support</a> WebGL version 2.</p>
 <p>We also make use <a href="https://webassembly.org">WebAssembly</a>, a binary instruction format that can be executed by a browser’s virtual machine at almost native speeds. Using the <a href="https://emscripten.org">emscripten</a> compiler toolchain, one can compile existing C or C++ code to WebAssembly. Emscripten also converts OpenGL to WebGL so that we don’t need to explicitly write WebGL code. With minor adjustments, many games and visualization tools that use OpenGL on a desktop can thus also be used in a browser. Similar to JavaScript libraries, programs in WebAssembly format are simply static files and don’t require the user to install anything, avoiding any of the issues that come with external libraries.</p>
-<p>There are several advantages of focusing on WebAssembly and emscripten for the in-browser rendering code. First, we can reuse our existing C code that uses OpenGL for rendering, with only minimal changes related to the rendering loop and the rendering of on-screen text.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> This makes it easy for existing projects to migrate to browser-based rendering. Other programming languages such as python are also beginning to be supported in browsers <span class="citation" data-cites="pyodide">(<a href="#ref-pyodide" role="doc-biblioref">Droettboom et al. 2021</a>)</span>.</p>
+<p>There are several advantages of focusing on WebAssembly and emscripten for the in-browser rendering code. First, we can reuse our existing C code that uses OpenGL for rendering, with only minimal changes related to the rendering loop and the rendering of on-screen text.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> This makes it easy for existing projects to migrate to browser-based rendering. Other programming languages such as python are also beginning to be supported in browsers <span class="citation" data-cites="pyodide">(<a href="#ref-pyodide" role="doc-biblioref">Droettboom et al. 2021</a>)</span>.</p>
 <p>Second, not only can we reuse graphic related code, but also any other C code. In the case of REBOUND, the code running in the browser uses the same input and output routines as the N-body simulation itself. By reusing these routines, it becomes very easy to unpack visualization data from a file or data stream, thus allowing us to send back and forth data over the network - which is what we need for the hybrid mode. Specifically, we are using REBOUND’s Simulationarchive binary format <span class="citation" data-cites="ReinTamayo2017">(<a href="#ref-ReinTamayo2017" role="doc-biblioref">Rein and Tamayo 2017</a>)</span> to send data to the browser.</p>
 <p>Third, we can even run an entire simulation in a web browser (we call this browser mode), generating data that is being visualized on-the-fly. This allows visualizations to be included in static website such as <a href="#fig-livesim" class="quarto-xref">Figure&nbsp;2</a> in this paper.</p>
 <p>Fourth, we are not restricting ourselves to the browser ecosystem. We can also run visualizations locally, without the need for emscripten, WebGL, or a browser, by simply calling OpenGL APIs the old fashioned way. This makes development easier and allows advanced users who are comfortable installing libraries to take full advantages of the efficiencies and all the features that a native application provides.</p>
@@ -307,7 +372,10 @@ Williams, Jonathan Carifio, Henrik Norman, and A. David Weigel. 2022. <span>“<
 
 <ol>
 <li id="fn1"><p>A WebAssembly compiler is required.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Rendering text is non-trivial in pure OpenGL. However, it is very easy in a browser with the additional benefit of better supporting accessibility tools such as screen readers.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>REBOUND also comes in the form of a pre-compiled Python package in which case no compiler is needed.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>At HD (Retina) resolution.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>For more details on Cross Origin Opener Policy (COOP) and Cross Origin Embedder Policy (COEP) headers see <a href="https://emscripten.org/docs/porting/pthreads.html">the emscripten documentation</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Rendering text is non-trivial in pure OpenGL. However, it is very easy in a browser with the additional benefit of better supporting accessibility tools such as screen readers.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
