@@ -161,6 +161,28 @@ Note that the exact same simulation can be compiled with a normal C compiler and
 
 [^resolution]: At HD (Retina) resolution.
 
+To measure the performance of the three different operating modes, we run the self-gravitating disk simulation from @fig-livesim with $N=10^4$ as well as $N=10^5$ particles and measure the average frames per second of the visualizations.
+The results are shown in @tbl-performance. 
+For small simulations ($N=10^5$), the performance is comparable for all three modes (42 - 71fps). 
+The hybrid mode is the slowest, which makes sense given the additional data transfer over http.
+For larger particle numbers ($N=10^5$) the native OpenGL visualization performs significantly better (41fps) than the hybrid or browser mode (2.2fps and 3.7fps). 
+The hybrid mode is slow because at every frame 12.8MB of data need to be transferred over http.
+The browser mode is slow for a different reason: the simulation and the visualization run on the same thread. 
+Thus, while the integrator is computing the next timestep, the visualization appears frozen.
+Without the simulation paused, the visualization performs significiantly better (29fps). 
+WebAssembly and emscripten support multithreading and shared memory access across threads (SharedArrayBuffer).
+However, this feature is currently not used in the browser mode because it is gated behind a Cross Origin Opener Policy[^COOP] which makes deployment more difficult.
+
+[^COOP]: For more details on Cross Origin Opener Policy (COOP) and Cross Origin Embedder Policy (COEP) headers see [the emscripten documentation](https://emscripten.org/docs/porting/pthreads.html).
+
+| Mode | $N=10^4$ particles | $N=10^5$ particles |
+|---------|:-----|:-----|
+| OpenGL   |  71 fps |  41 fps    |
+| Hybrid   |  42 fps |  2.2 fps   |
+| Browser  |  54 fps |  3.7 fps   |
+
+: Performance {#tbl-performance}
+
 ::: {#fig-livesim}
 
 <iframe width="100%" height="500" src="rebound_webgl.html"></iframe>
