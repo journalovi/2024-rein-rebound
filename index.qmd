@@ -36,7 +36,7 @@ Real-time visualizations of numerical simulations offer scientists immediate fee
 ###### Current Challenges 
 Developing a visualization tool with support for different operating systems, CPU/GPU architectures, and programming languages can be a challenge.
 It is common to use one or more graphics or UI libraries to act as abstraction layers and hide the underlying complexity.
-Whereas external libraries greatly simplify the initial programming effort, we argue that relying on them introduces new dependencies and problems, such as a higher entry barriers for new developers and users, and uncertainty regarding long-term support.
+Whereas external libraries greatly simplify the initial programming effort, we argue that relying on them introduces new dependencies and problems, such as a higher barriers to entry for new developers and users, and uncertainty regarding long-term support.
 
 ###### Proposed Solution
 In this paper we present a new approach for real time visualizations which we have implemented for the N-body package REBOUND [@ReinLiu2012].
@@ -70,7 +70,7 @@ The authors declare that there are no competing interests.
 
 Visualizations are a crucial part of the scientific process.
 There are many popular tools to make two or three dimensional graphs such as gnuplot [@Williams2013], matplotlib [@Hunter2007], or yt [@Turk2011] for rendering volumetric and particle data.
-Many specialized tools exist as well, for example [@Williams2022] describe a novel approach for an interactive user interface for the WorldWide Telescope.
+Many specialized tools exist as well, for example @Williams2022 describe a novel approach for an interactive user interface for the WorldWide Telescope.
 The above examples demonstrate the diversity of visualization needs and the tools that have been developed to serve those needs.
 However, it would be impossible to review all the software that is available.
 
@@ -82,7 +82,7 @@ There are two ways to approach the problem of cross-platform graphics that are c
   Whereas this approach might be an option for large projects (think of a game developed by a large studio), it is typically not within the realm of possibilities for small scientific software packages.
   If resources are finite, one might end up with limited support of only a few platforms, or with some platforms enjoying more features than others. 
   Mobile applications are an example where this approach is often used and iOS and Android versions of the same application do not necessarily share the same features.
-- Alternatively, one can rely on a cross-platform graphics or user interface (UI) library such as [QT](https://www.qt.io), [Unity](https://unity.com), [OpenGL](https://opengl.org), or [Vulkan](https://vulkan.org).
+- Alternatively, one can rely on a cross-platform libraries, frameworks, or APIs such as [QT](https://www.qt.io), [Unity](https://unity.com), [OpenGL](https://opengl.org), or [Vulkan](https://vulkan.org).
   These make cross-platform development much more straightforward but at the cost of adding a dependency. 
   Scientific software, in particular if it involves simulating scientific processes, is mostly distributed as source code because researchers want the ability to study and modify it.
   Compiling source code that depends on external libraries into an executable can be a major obstacle for new developers and users alike. 
@@ -96,14 +96,14 @@ This paper presents an alternative approach which we think has several important
 
 - Dependency free. There are no external libraries required.^[A WebAssembly compiler is required.]
 - Cross platform. Any platform that has a reasonably modern browser can be used to render visualizations. This includes both desktop and mobile operating systems: Linux, MacOS, Windows, iOS, Android.
-- Remote visualizations. Using port-forwarding via SSH, one can run a simulations on one computer, say a node of a computing cluster, and visualize it in real time on another workstation. 
+- Remote visualizations. Using port-forwarding via SSH, one can run a simulation on one computer, say a node of a computing cluster, and visualize it in real time on another workstation. 
 - Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, it is likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.
 
 In the following sections, we will describe how this approach works in detail.
 
 ## Operating modes
 A key feature of our approach is its flexibility.
-@fig-flowchart show the three different operating modes that are possible.
+@fig-flowchart shows the three different operating modes that are possible.
 Modules with the same colour in the figure make use of the same source code.
 The high level of code-reuse is possible because C/C++ code can be compiled with emscripten to WebAssembly which can then be interpreted by a web browser at almost native speed.
 In summary, the different modes work as follows:
@@ -139,10 +139,12 @@ Modules with the same colour (green, red, blue) make use of the same source code
 
 Both the standalone and the browser mode have been employed widely by other tools. 
 The innovation of this paper is the hybrid mode which in many ways represents the best of both worlds.
-In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler~[REBOUND also comes in the form of a pre-compiled Python package in which case no compiler is needed.].
-Because there are no dependencies on external libraries, this does not required any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps.
+In the case of REBOUND, a user simply downloads the source code and compiles it using any C compiler[^precompiled].
+Because there are no dependencies on external libraries, this does not require any configure scripts, installing system-wise third party packages, setting up environment variables, or other complicated steps.
 The user can setup or run a simulation without even considering whether a visualization might be useful.
 If the user at some point decides that it might be useful, then they can simply open a web browser and point it towards the simulation's dormant web server to start visualizing the simulation and get immediate feedback regarding the simulation.
+
+[^precompiled]: REBOUND also comes in the form of a pre-compiled Python package in which case no compiler is needed.
 
 Because we already have the visualization code running in a web browser, the additional task of running entire simulations in the web browser is straightforward.
 @fig-livesim shows an example of what is possible by using the browser mode. 
@@ -152,16 +154,18 @@ The rendering is using WebGL. The console output is also shown.
 The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, press the space bar to pause. 
 The figure is included in this document using an ```<iframe>``` HTML tag.
 A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size.
-For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size.
+For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size[^resolution].
 The [REBOUND documentation](https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/) makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser.
 This is a fantastic way to showcase potential users the ability of a software package.
 Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL. 
+
+[^resolution]: At HD (Retina) resolution.
 
 ::: {#fig-livesim}
 
 <iframe width="100%" height="500" src="rebound_webgl.html"></iframe>
 
-This figure shows an interactive, real time visualization of a self-gravitating disk being integrated with the N-body code REBOUND. 
+This figure shows an interactive, real time visualization of a self-gravitating disk where the equations of motion are being integrated with the N-body code REBOUND. 
 To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser. 
 This is what we refer to as the *browser mode*.
 
