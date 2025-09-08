@@ -183,16 +183,18 @@ However, this feature is currently not used in the browser mode because it is ga
 
 : Performance {#tbl-performance}
 
+::: {.content-visible when-format="html"}
 ::: {#fig-livesim}
-
 <iframe width="100%" height="500" src="rebound_webgl.html"></iframe>
-
 This figure shows an interactive, real time visualization of a self-gravitating disk where the equations of motion are being integrated with the N-body code REBOUND. 
 To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser. 
 This is what we refer to as the *browser mode*.
+:::
+:::
+::: {.content-visible unless-format="html"}
+![This figure shows a screenshot of an interactive, real time visualization of a self-gravitating disk where the equations of motion are being integrated with the N-body code REBOUND. To achieve this, REBOUND has been compiled with emscripten to WebAssembly allowing it run in the browser.  This is what we refer to as the *browser mode*. For the interactive version of this figure, see the [HTML version of this paper](https://www.journalovi.org/2024-rein-rebound/).](screenshot.png){#fig-livesim}
 
 :::
-
 
 ## Web Browser
 We rely on a web browser for all graphic related functionality in the hybrid and browser modes. 
