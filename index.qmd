@@ -55,7 +55,10 @@ We focus on the implementation in REBOUND but the concepts and ideas discussed c
 
 ###### Research materials
 
-An example implementation of the solution described in this paper is included in the [REBOUND](https://github.com/hannorein/rebound) N-body package.
+An example implementation of the solution described in this paper is included in the REBOUND N-body package [@ReinLiu2012].
+The most recent development version is available on [GitHub](https://github.com/hannorein/rebound). 
+An archived version is also available [@ReboundZenodo2025].
+
 
 ###### License
 
@@ -97,7 +100,7 @@ This paper presents an alternative approach which we think has several important
 - Dependency free. There are no external libraries required.^[A WebAssembly compiler is required.]
 - Cross platform. Any platform that has a reasonably modern browser can be used to render visualizations. This includes both desktop and mobile operating systems: Linux, MacOS, Windows, iOS, Android.
 - Remote visualizations. Using port-forwarding via SSH, one can run a simulation on one computer, say a node of a computing cluster, and visualize it in real time on another workstation. 
-- Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, it is likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.
+- Future-proof. Because the approach relies on open web technologies that are supported by all major browsers, we find it likely that this approach will continue to work for many years to come without requiring much maintenance in the same way one can still view websites that were developed decades ago.
 
 In the following sections, we will describe how this approach works in detail.
 
@@ -248,6 +251,8 @@ This may seem like a daunting task, but the reference implementation we provide 
 This is possible because our web server doesn't need to support security features - it is not intended for use on public networks. 
 It just performs the task of getting data to our rendering code in the browser. 
 Since we are implementing both the front and backend, we have tight control over what kind of requests the server needs to be able to respond to.
+
+
 
 In addition to sending data from the simulation to the browser, the web server can also receive commands and data from the browser.
 For example, in REBOUND these commands allow the user to pause or quit a running simulation, or step through simulations manually.
