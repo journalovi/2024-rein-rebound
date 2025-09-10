@@ -164,6 +164,14 @@ Note that the exact same simulation can be compiled with a normal C compiler and
 
 [^resolution]: At HD (Retina) resolution.
 
+There are some drawbacks to using WebAssembly. 
+First, a WebAssembly compiler needs to be installed when a user wants to modify the visualization code.
+WebAssembly compilers such as emscripten are still relatively new and are not yet as widely available and as well tested as C compilers.
+Second, debgugging WebAssembly code might pose a challenge given that the compiled code makes it harder to inspect the code in the browser and due to a lack of debugging tools.
+And third, using WebAssembly can impact accessability. 
+For example text rendered via WebAssembly and WebGL might not be picket up by operating system or browser accessability tools such as screenreaders.
+For this reason, we do not render text via WebGL in our implementation and instead use HTML for this.
+
 To measure the performance of the three different operating modes, we run the self-gravitating disk simulation from @fig-livesim with $N=10^4$ as well as $N=10^5$ particles and measure the average frames per second of the visualizations.
 The results are shown in @tbl-performance. 
 For small simulations ($N=10^5$), the performance is comparable for all three modes (42 - 71fps). 
