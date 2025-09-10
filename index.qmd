@@ -274,7 +274,7 @@ The beginning of the simulation in @fig-livesim demonstrates this: the camera au
 ## Jupyter Notebooks
 Although REBOUND is written in C, it also comes with a python interface, allowing users to more easily setup and run N-body simulations that do not require modifying the REBOUND source code itself.
 Jupyter notebooks [@jupyter] are a popular web-based interactive environment to edit and run python code.
-Given that we now have a web-based visualization tool for REBOUND, we can easily incorporate it into a Jupyter notebook.
+Given that we now have a web-based visualization tool for REBOUND, we can easily incorporate it into a Jupyter notebook using the hybrid mode.
 A user can start an interactive visualization of a simulation within a Jupyter notebook by simply calling the `.widget()` function on any simulation object. 
 All [this function](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/rebound/simulation.py#L214) does is insert an iframe in the notebook and point it to the simulation's web server using the ``Iframe`` class of ```IPython.display```.
 Just as for the other operating modes, this workflow does not rely on any external libraries, neither on the C nor the IPython side. 
