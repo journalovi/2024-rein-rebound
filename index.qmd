@@ -293,11 +293,17 @@ Because this is using the hybrid mode, this workflow does also not rely on any e
 ## Step by step guide 
 
 Here, we summarize the adjustments we had to make to the existing OpenGL code in REBOUND in order to add the new hybrid and browser modes.
+The goal of this section is to help other developers who want to adopt a similar visualization strategy. 
+We assume that an existing desktop visualization based on OpenGL and written in C already exists.
 
-- The OpenGL shader in the browser uses an Embedded Systems (ES) version. This difference is hard coded with a precompiler directive.
-- related to the rendering loop and the rendering of on-screen text.^[Rendering text is non-trivial in pure OpenGL. However, it is very easy in a browser with the additional benefit of better supporting accessibility tools such as screen readers.]
+- The OpenGL shaders in the browser use an Embedded Systems (ES) version. [This](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/src/display.c#L1032) [difference](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/src/display.c#L1087) is hard coded with a precompiler directive.
+- Because the capabilities of the ES version are more restricted, some features have been disabled with a precompiler directive. For example, we disable [multi-sampling](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/src/display.c#L1075).
+- We disable the OpenGL based rendering of on-screen text. Rendering text is non-trivial in pure OpenGL[^simplefont]. However, it is very easy in a browser with the additional benefit of better supporting accessibility tools such as screen readers. All we need to do is update an HTML element which we can do by [calling javascript from our C code](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/src/display.c#L135) with emscripten's ``EM_JS`` API.
+- We also need to adjust the rendering loop. On the desktop version the rendering loop is using ``glfwGetTime()`` to call the rendering function at a [fixed framerate](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/src/display.c#L1718). On the emscripten side, we use the ``emscripten_request_animation_frame_loop()`` API call instead. 
+- After making these changes, one should be able to compile the code with emscripten and run the visualization in the browser. This is a good oportunity to fix any new bugs or rendering issues.
 
 
+[^simplefont]: REBOUND uses [simplefont](https://github.com/hannorein/rebound/blob/4a0bdb056f684c397a10598d270f52df3bce883c/src/display.c#L784), a low resolution texture atlas.
 
 ## Conclusions
 In this paper, we have presented a flexible framework to add real-time visualization to a scientific simulation package.
