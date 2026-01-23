@@ -174,7 +174,7 @@ The visualization is interactive: drag to rotate, shift+drag or scroll to zoom, 
 The figure is included in this document using an ```<iframe>``` HTML tag.
 A single file includes the bundled up HTML, CSS, JavaScript, WebAssembly as well as some small image assets and is less than 500 kB in size.
 For comparison, a simple screenshot of the simulation in PNG format would be 200 kB in size[^resolution].
-The [REBOUND documentation](https://rebound.readthedocs.io/en/latest/c_examples/selfgravity_disc/) makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser and thus showcasing the ability of the software package.
+The [REBOUND documentation](https://rebound.hanno-rein.de/c_examples/selfgravity_disc/) makes extensive use of the browser mode, offering users the ability to run all examples directly in the browser and thus showcasing the ability of the software package.
 Note that the exact same simulation can be compiled with a normal C compiler and run in the stand-alone mode showing the same visualization but using OpenGL instead of WebGL. 
 
 [^resolution]: At HD (Retina) resolution.
@@ -223,7 +223,7 @@ Specifically, we are using REBOUND's Simulationarchive binary format [@ReinTamay
 Although the data transfer using the Simulationarchive format is easy to setup, it is not optimal as the Simulationarchive is not compressed and the full simulation is sent every frame, rather than only the changes.
 
 Third, we can even run an entire simulation in a web browser (we call this browser mode), generating data that is being visualized on-the-fly. 
-This allows visualizations to be included in static website such as @fig-livesim in this paper. 
+This allows visualizations to be included in a static website such as @fig-livesim in this paper. 
 
 Fourth, we are not restricting ourselves to the browser ecosystem. We can also run visualizations locally, without the need for emscripten, WebGL, or a browser, by simply calling OpenGL APIs the old fashioned way. 
 This makes development easier and allows advanced users who are comfortable installing libraries to take full advantages of the efficiencies and all the features that a native application provides.
@@ -244,7 +244,7 @@ The tests were run on a 2020 MacBook Air (M1).
 Safari was used as a browser but the measurements were almost identical for Chrome and Firefox.
 The results are shown in @tbl-performance. 
 
-For small simulations ($N=10^5$), the performance is comparable for all three modes (42 - 71fps). 
+For small simulations ($N=10^4$), the performance is comparable for all three modes (42 - 71fps). 
 The hybrid mode is the slowest, which can be explained by the additional data transfer over http.
 For larger particle numbers ($N=10^5$) the native OpenGL visualization performs significantly better (41fps) than the hybrid or browser mode (2.2fps and 3.7fps). 
 The hybrid mode is slow because at every frame 12.8MB of data need to be transferred over http.
@@ -292,7 +292,7 @@ In addition to sending data from the simulation to the browser, the web server c
 For example, in REBOUND these commands allow the user to pause or quit a running simulation, or step through simulations manually.
 We furthermore make use of HTTP POST requests to send screen captures from the browser to the server.
 The user may opt to save these screenshots on the server side, for example to later combine individual frames into an animation. 
-To further facilitate the rendering of complex animations, we also [implement a way](https://rebound.readthedocs.io/en/latest/c_examples/animation_solar_system/#animation-of-the-solar-system-c) for the server side to push the view matrix and other visualization setting to the browser and override any client side user interaction. 
+To further facilitate the rendering of complex animations, we also [implement a way](https://rebound.hanno-rein.de/c_examples/animation_solar_system/) for the server side to push the view matrix and other visualization setting to the browser and override any client side user interaction. 
 The beginning of the simulation in @fig-livesim demonstrates this: the camera automatically zooms in and rotates by 90 degrees at the beginning of the simulation before yielding control over the visualization to the user.
 
 
