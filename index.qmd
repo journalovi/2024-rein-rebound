@@ -239,7 +239,7 @@ For this reason, we do not render text via WebGL in our implementation and inste
 
 
 ## Performance 
-To measure and compare the performance of the three different operating modes, we run the self-gravitating disk simulation from @fig-livesim with $N=10^4$ as well as $N=10^5$ particles and measure the average frames per second we achieve with each visualization mode.
+To measure and compare the performance (refresh rate) of the three different operating modes, we run the self-gravitating disk simulation from @fig-livesim with $N=10^4$ as well as $N=10^5$ particles and measure the average frames per second we achieve with each visualization mode.
 The tests were run on a 2020 MacBook Air (M1). 
 Safari was used as a browser but the measurements were almost identical for Chrome and Firefox.
 The results are shown in @tbl-performance. 
@@ -258,13 +258,27 @@ In summary, for small particle numbers ($N\lesssim10^4$), there is no significan
 For large simulations with millions of particles, the present approach is not feasible due to its single threaded implementation.
 However, note that the main use case of REBOUND is running small N-body simulations of planetary systems with few ($N<10$) particles.
 
+Also shown in @tbl-performance is the runtime require to integrate for 10 code units.
+The fastest simulations are if course those without any visualization.
+The runtime increases only very slightly (10%) when using the hybrid mode.
+Simulations using the OpenGL or browser mode have more overhead which results in smoother visualizations (higher fps) but still take at most twice as long to run.
+
+
 [^COOP]: For more details on Cross Origin Opener Policy (COOP) and Cross Origin Embedder Policy (COEP) headers see [the emscripten documentation](https://emscripten.org/docs/porting/pthreads.html). Whereas we could easily set these policies in our own web server implementation, it is currently not possible to set them on many hosting providers such as ReadTheDocs and GitHub pages.
 
-| Mode | $N=10^4$ particles | $N=10^5$ particles |
-|---------|:-----|:-----|
-| OpenGL   |  71 fps |  41 fps    |
-| Hybrid   |  42 fps |  2.2 fps   |
-| Browser  |  54 fps |  3.7 fps   |
++------------------+---------------+------------+---------------+------------+
+| Mode             | $N=10^4$ particles         | $N=10^5$ particles         |
++------------------+---------------+------------+---------------+------------+
+|                  | refresh rate  | runtime    | refresh rate  | runtime    |
++==================+===============+============+===============+============+
+| OpenGL           | 71 fps        | 9.1s       | 41 fps        | 1m 50s     |
++------------------+---------------+------------+---------------+------------+
+| Hybrid           | 42 fps        | 4.7s       | 2.2 fps       | 1m 22s     |
++------------------+---------------+------------+---------------+------------+
+| Browser          | 54 fps        | 7.3s       | 3.7 fps       | 1m 38s     |
++------------------+---------------+------------+---------------+------------+
+| No visualization | N/A           | 4.4s       | N/A           | 1m 17s     |
++------------------+---------------+------------+---------------+------------+
 
 : Performance of the different visualization modes using the self-gravitating disk simulation from @fig-livesim as an example. {#tbl-performance}
  
