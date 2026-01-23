@@ -57,7 +57,7 @@ Whereas external libraries greatly simplify the initial programming effort, we a
 ###### Proposed Solution
 In this paper we present a new approach for real-time visualizations which we have implemented for the N-body package REBOUND [@ReinLiu2012].
 We propose to use a web browser to handle GPU accelerated rendering.
-This enables us to offer 3D, interactive visualizations on all major operating systems.
+This enables us to offer 3D, interactive visualizations of simulations running natively on all major operating systems.
 What makes our new approach unique is that we achieve this without the need for any external libraries.
 We utilize WebAssembly and emscripten to reuse existing OpenGL visualization code.
 Using communication via HTTP and a custom built-in web server, we are able to provide both local and remote real-time visualizations.
