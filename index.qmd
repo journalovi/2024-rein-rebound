@@ -258,10 +258,11 @@ In summary, for small particle numbers ($N\lesssim10^4$), there is no significan
 For large simulations with millions of particles, the present approach is not feasible due to its single threaded implementation.
 However, note that the main use case of REBOUND is running small N-body simulations of planetary systems with few ($N<10$) particles.
 
-Also shown in @tbl-performance is the runtime require to integrate for 10 code units.
-The fastest simulations are if course those without any visualization.
+Also shown in @tbl-performance is the runtime required to integrate for 10 code units.
+The fastest simulations are of course those without any visualization.
 The runtime increases only very slightly (10%) when using the hybrid mode.
-Simulations using the OpenGL or browser mode have more overhead which results in smoother visualizations (higher fps) but still take at most twice as long to run.
+Simulations using the OpenGL mode or the browser mode have more overhead.
+This results in smoother visualizations (higher fps) at the cost of somewhat longer runtimes.
 
 
 [^COOP]: For more details on Cross Origin Opener Policy (COOP) and Cross Origin Embedder Policy (COEP) headers see [the emscripten documentation](https://emscripten.org/docs/porting/pthreads.html). Whereas we could easily set these policies in our own web server implementation, it is currently not possible to set them on many hosting providers such as ReadTheDocs and GitHub pages.
